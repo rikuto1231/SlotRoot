@@ -15,7 +15,7 @@ public class Murakami_move : MonoBehaviour
         }
 
         videoPlayer.isLooping = true;
-        videoPlayer.SetDirectAudioMute(0, true); // トラック0の音声をミュート
+        videoPlayer.SetDirectAudioMute(0, true); // トラック0の映像の音声をミュート
         videoPlayer.clip = defaultClip; // デフォルトの動画をセット
         videoPlayer.Play(); // デフォルトの動画を再生
     }
@@ -39,7 +39,7 @@ public class Murakami_move : MonoBehaviour
     {
         videoPlayer.clip = defaultClip; // デフォルトの動画に戻す
         videoPlayer.isLooping = true;   // デフォルト動画はループするように設定
-        videoPlayer.SetDirectAudioMute(0, true); // トラック0の音声をミュート
+        videoPlayer.SetDirectAudioMute(0, true); // トラック0の映像の音声をミュート
         videoPlayer.Play();             // デフォルトの動画を再生
 
         // イベントリスナーを解除

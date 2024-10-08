@@ -5,7 +5,6 @@ using System.Collections.Generic;
 public class ReelManager : MonoBehaviour
 {
     [SerializeField] private List<Reel> reels; // リールのリスト
-    [SerializeField] private GameObject winEffect; // 当たり時の演出オブジェクト（例: パーティクル）
     [SerializeField] private Murakami_move murakamiMove; // Murakami_moveスクリプトを持つオブジェクト
     [SerializeField] private AudioSource winSound; // 当たり音声を再生するためのAudioSource
     [SerializeField] private TextMeshProUGUI pointText; // ポイントを表示するTextMeshProUGUI
@@ -110,57 +109,46 @@ public class ReelManager : MonoBehaviour
 
         Debug.Log("リールが一致しました！");
 
-        // ポイントを付与
-        AddPoints(100); // リールが揃ったら100ポイントを追加
-
-        // 当たりの演出を処理
-        HandleWinEffects(firstSprite); // 揃ったスプライトに対応した演出を管理する
-        
+        // スプライトごとに演出を処理
+        HandleWinEffects(firstSprite);
     }
 
     // スプライトごとの演出を処理
-private void HandleWinEffects(Sprite matchingSprite)
-{
-    foreach (var effect in spriteEffects) // スプライトごとの演出リストをチェック
+    private void HandleWinEffects(Sprite matchingSprite)
     {
-        if (effect.sprite == matchingSprite) // 揃ったスプライトに対応するエフェクトか確認
+        foreach (var effect in spriteEffects) // スプライトごとの演出リストをチェック
         {
-            // 動画を切り替える（murakamiMoveを使用）
-            if (murakamiMove != null && effect.specialVideo != null)
+            if (effect.sprite == matchingSprite) // 揃ったスプライトに対応するエフェクトか確認
             {
-                Debug.Log($"リールが揃いました: {matchingSprite.name}");
-                murakamiMove.PlaySpecialVideo(effect.specialVideo); // スプライトに対応する特別な動画を再生
-            }
+                // 動画を切り替える（murakamiMoveを使用）
+                if (murakamiMove != null && effect.specialVideo != null)
+                {
+                    Debug.Log($"リールが揃いました: {matchingSprite.name}");
+                    murakamiMove.PlaySpecialVideo(effect.specialVideo); // スプライトに対応する特別な動画を再生
+                }
 
-            // パーティクルや音の演出
-            if (winEffect != null)
-            {
-                winEffect.SetActive(true); // パーティクルなどの演出を再生
-            }
+                // 当たり音声を再生
+                if (effect.winAudioClip != null)
+                {
+                    AudioSource.PlayClipAtPoint(effect.winAudioClip, Camera.main.transform.position);
+                }
 
-            // 当たり音声を再生
-            if (effect.winAudioClip != null)
-            {
-                AudioSource.PlayClipAtPoint(effect.winAudioClip, Camera.main.transform.position);
-            }
+                if (winSound != null)
+                {
+                    winSound.Play(); // 当たり音声を再生
+                }
 
-            if (winSound != null)
-            {
-                winSound.Play(); // 当たり音声を再生（必要に応じてこの行を削除）
-            }
+                if (outerFrameEffect != null)
+                {
+                    outerFrameEffect.StartBlinking(); // OuterFrameの点滅を開始
+                }
 
-            if (outerFrameEffect != null)
-            {
-                outerFrameEffect.StartBlinking(); // OuterFrameの点滅を開始
+                break; // 演出が終わったのでループを終了
             }
-
-            break; // 演出が終わったのでループを終了
         }
     }
-}
 
-
-    // ポイントを追加するメソッド
+    // ポイントを追加するメソッド（消さずに残しておく）
     private void AddPoints(int pointsToAdd)
     {
         playerPoints += pointsToAdd;
@@ -177,10 +165,9 @@ private void HandleWinEffects(Sprite matchingSprite)
     }
 
     public void ResetPoints()
-{
-    playerPoints = 0; // ポイントを0にリセット
-    UpdatePointDisplay(); // UIを更新して0ポイントを表示
-    Debug.Log("ポイントがリセットされました。");
-}
-
+    {
+        playerPoints = 0; // ポイントを0にリセット
+        UpdatePointDisplay(); // UIを更新して0ポイントを表示
+        Debug.Log("ポイントがリセットされました。");
+    }
 }
