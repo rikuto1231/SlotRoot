@@ -16,181 +16,189 @@ public class ReelManager : MonoBehaviour
     private bool isReelActive = false; // リールのアクティブ状態
     private int playerPoints = 0; // プレイヤーのポイント（初期値は0）
     private int rotationCount = 0; // 回転数を管理する変数
-    private int bonusReelCount = 0; // 現在のスピンカウント
+    private int bonusReelCount = 0; // ボーナス中のスピンカウント
     private bool canRotate = true; // リール回転制御で使う
     private bool isInBonusState = false; // ボーナス状態かどうかのフラグ
-    private bool IsBattleWon = false; // 勝利フラグ
-    private bool IsBattleLost = false; // 敗北フラグ
-    private SpriteEffect effect; // クラス変数としてのeffect
+    private SpriteEffect effect; // 現在のボーナス対象のスプライト情報
+    private bool isBattleResultChecked = false; // 戦闘結果が確認されたか
 
-    // 初期ポイントの取得と表示。>>>完成 >>>後ほどDB接続取得形式に変更
     private void Start()
     {
-        // 現状0リセット >>> 後でDB取得
         UpdatePointDisplay();
     }
 
     private void Update()
     {
-        // スペース＆リール禁止されてない＆ボーナス状態じゃない＆リールがアクティブじゃない
-        if (Input.GetKeyDown(KeyCode.Space) && canRotate && !isInBonusState && !isReelActive) // ボーナス状態でない場合
+        // 通常モード時のスピン処理
+        if (Input.GetKeyDown(KeyCode.Space) && canRotate && !isInBonusState && !isReelActive)
         {
-            Debug.Log("ボーナス状態じゃないときのリール回転スタート");
             StartAllReels();
-            rotationCount++; // 総回転数を記録
-
-            // 抽選処理を行う
+            rotationCount++;
             CheckForBonusDraw();
         }
 
-        // スペース＆リール禁止されてない＆ボーナス状態
-        if (Input.GetKeyDown(KeyCode.Space) && canRotate && isInBonusState && !isReelActive) // ボーナス状態でない場合
+        // ボーナスモード時のスピン処理
+        if (Input.GetKeyDown(KeyCode.Space) && canRotate && isInBonusState && !isReelActive)
         {
-            Debug.Log("ボーナス状態の時のリール回転スタート");
             StartAllReels();
-            rotationCount++; // 総回転数を記録
-            bonusReelCount++;// ボーナス中の10回転までを管理
+            rotationCount++;
+            bonusReelCount++;
 
-            // ポイントを付与する（ボーナスなら毎回ここを通る）
+            // ボーナス中のスピンごとにポイント付与
             AddPoints(30);
-            
-            // 10回転を超えたらボーナスフラグの変更
-            if (bonusReelCount <= 10)
+
+            // 10回転以内にスプライトが揃わなかったら敗北
+            if (bonusReelCount >= 10 && !isBattleResultChecked)
             {
-                isInBonusState = false;
+                HandleDefeat(); // 敗北処理を呼び出し
             }
         }
 
-        // Enterキーが押されたら現在のリールを停止
+        // リールを停止する処理
         if (Input.GetKeyDown(KeyCode.Return) && isReelActive)
         {
-            // リールを1ずつ停止。CheckIfAllReelsMatchがこの中でチェックを行う
             StopCurrentReel();
         }
     }
 
+    // ボーナス抽選を行うメソッド
     private void CheckForBonusDraw()
     {
-        // スプライトごとに設定された確率で抽選
         foreach (var effect_in in spriteEffects)
         {
-            // 確率チェック（0.0〜1.0の範囲で比較）
             if (Random.value < effect_in.hitProbability)
             {
-                Debug.Log("CheckForBonusDraw:抽選成功 >>> ボーナスメソッドに移行");
-                effect = effect_in; // クラス変数に設定
-                EnterBonusState(); // ボーナス状態に入る
+                effect = effect_in;
+                EnterBonusState();
                 break;
             }
         }
     }
 
-    // スロットがボーナスに入るときに呼ばれるメソッド
+    // ボーナス状態に入る処理
     private void EnterBonusState()
     {
-        Debug.Log("EnterBonusState: マネージャ登場動画再生前");
-
         if (!isInBonusState)
         {
             isInBonusState = true;
-            Debug.Log("EnterBonusState: マネージャ登場動画再生中");
+            bonusReelCount = 0; // ボーナススピンカウントをリセット
+            videoPlayManager.PlayBonusVideo(effect.specialVideo); // ボーナス開始動画
 
-            // マネージャで登場動画を再生
-            videoPlayManager.PlayBonusVideo(effect.specialVideo);
-            Debug.Log("登場動画を再生");
+            // 当たり音声を設定して再生
+            winSound.clip = effect.winAudioClip; // 当たり音声を設定
+            winSound.Play(); // 当たり音声を再生
 
-            // リール停止状態管理メソッド呼び出し
-            ToggleReelRotation();
-
-            // ボーナス動画が終了した後、戦闘動画再生メソッドの呼び出し
-            videoPlayManager.GetComponent<VideoPlayer>().loopPointReached += (vp) => PlayBattleVideo();
+            canRotate = false; // 登場動画中は回せない
+            videoPlayManager.GetComponent<VideoPlayer>().loopPointReached += (vp) => {
+                canRotate = true; // 動画終了後、リールを回せるように
+                PlayBattleVideo();
+            }; 
         }
     }
 
-    // 戦闘時の動画を再生する処理
+    // 戦闘動画を再生する処理
     private void PlayBattleVideo()
     {
-        // 戦闘時の動画を再生
         videoPlayManager.PlayBattleVideo(effect.battleVideo);
-        ToggleReelRotation();
-
     }
 
-    private void CheckBattleResults()
-    {
-        // スプライトをチェックしてポイントを付与する処理
-    }
-
+    // 勝利動画を再生する処理
     private void PlayVictoryVideo()
     {
-        // 勝利時の動画を再生する処理
+        videoPlayManager.PlaySpecialVideo(effect.victoryVideo);
+        AddPoints(effect.pointsForSprite); // 勝利時に追加ポイントを付与
+        EndBonusState();
     }
 
+    // 敗北処理を行う
+    private void HandleDefeat()
+    {
+        PlayDefeatVideo();
+        EndBonusState();
+    }
+
+    // 敗北動画を再生する処理
     private void PlayDefeatVideo()
     {
-        // 敗北時の動画を再生する処理
+        videoPlayManager.PlaySpecialVideo(effect.defeatVideo);
+        EndBonusState();
     }
 
+    // ボーナス状態を終了する処理
+    private void EndBonusState()
+    {
+        isInBonusState = false;
+        isBattleResultChecked = false;
+        bonusReelCount = 0;
+        videoPlayManager.PlaySpecialVideo(null); // 動画をリセット
+    }
+
+    // リールを回転させる
     private void StartAllReels()
     {
-        // 回転が許可されている場合のみリールを開始
-        Debug.Log("全てのリールを開始します。");
         foreach (var reel in reels)
         {
-            if (reel != null)
-            {
-                reel.StartReel();
-            }
-            else
-            {
-                Debug.LogError("リールが `null` です。");
-            }
+            reel.StartReel();
         }
         isReelActive = true;
-        currentReelIndex = 0; // スタート時にインデックスをリセット
+        currentReelIndex = 0;
     }
 
-    // 現在のリールを止める
+    // リールを停止する
     private void StopCurrentReel()
     {
         if (currentReelIndex < reels.Count)
         {
             var reel = reels[currentReelIndex];
-            if (reel != null)
-            {
-                reel.StopReel();
-                currentReelIndex++;
-            }
-            else
-            {
-                Debug.LogError($"リール {currentReelIndex} が `null` です。");
-            }
+            reel.StopReel();
+            currentReelIndex++;
 
             if (currentReelIndex >= reels.Count)
             {
                 isReelActive = false;
-                Debug.Log("全てのリールが停止しました。");
                 CheckIfAllReelsMatch();
             }
         }
     }
 
-    // ボーナス毎回転加算用
+    // 全てのリールが一致しているか確認し、ボーナス対象のスプライトが揃った場合のみ勝利動画を再生
+    private void CheckIfAllReelsMatch()
+    {
+        // まず、全てのリールのスプライトが一致しているかを確認
+        Sprite firstSprite = reels[0].GetCurrentSprite();
+        
+        foreach (var reel in reels)
+        {
+            // いずれかのリールが異なるスプライトならば終了
+            if (reel.GetCurrentSprite() != firstSprite)
+            {
+                Debug.Log("リールが一致していません");
+                isBattleResultChecked = false;
+                return;
+            }
+        }
+
+        // 全てのリールが一致している場合、特定のスプライト（effectで定義されるもの）が揃ったかをチェック
+        if (firstSprite == effect.sprite) // `effect.spriteImage` でボーナス対象のスプライトを指定
+        {
+            Debug.Log("特定のスプライトが揃いました！");
+            isBattleResultChecked = true;
+            PlayVictoryVideo(); // 勝利動画を再生
+        }
+        else
+        {
+            Debug.Log("一致しましたが、勝利対象のスプライトではありません");
+            isBattleResultChecked = false;
+        }
+    }
+
+    // ポイント加算
     private void AddPoints(int pointsToAdd)
     {
-        playerPoints += pointsToAdd; // 指定された数値を加算
-        UpdatePointDisplay(); // ポイント表示を更新
+        playerPoints += pointsToAdd;
+        UpdatePointDisplay();
     }
 
-    // ボーナス勝利時のスプライト設定ポイント加算
-    private void AddPoints()
-    {
-        playerPoints += effect.pointsForSprite; // スプライトに設定されたポイントを付与
-        UpdatePointDisplay(); // ポイント表示を更新
-    }
-
-
-    // ポイント表示を更新するメソッド
     private void UpdatePointDisplay()
     {
         if (pointText != null)
@@ -204,40 +212,5 @@ public class ReelManager : MonoBehaviour
         playerPoints = 0; // ポイントを0にリセット
         UpdatePointDisplay(); // UIを更新して0ポイントを表示
         Debug.Log("ポイントがリセットされました。");
-    }
-
-    // リール回転許可の制御切り替えメソッド
-    public void ToggleReelRotation()
-    {
-        canRotate = !canRotate; // 回転の状態を反転
-        string state = canRotate ? "許可されました。" : "禁止されました。";
-        Debug.Log($"リールの回転が{state}");
-    }
-
-    private void StopAllReels()
-    {
-        // すべてのリールを停止する処理
-    }
-
-    // リール停止後の一致チェックメソッド
-    private void CheckIfAllReelsMatch()
-    {
-        if (reels.Count == 0) return;
-
-        Sprite firstSprite = reels[0].GetCurrentSprite(); // 最初のリールのスプライトを基準にする
-        Debug.Log($"基準スプライト: {firstSprite.name}");
-
-        foreach (var reel in reels)
-        {
-            var currentSprite = reel.GetCurrentSprite();
-
-            if (currentSprite != firstSprite)
-            {
-                Debug.Log("一致しません。");
-                return; // 一致しない場合は処理を終了
-            }
-        }
-
-        Debug.Log("全てのリールが一致しました！");
     }
 }

@@ -1335,12 +1335,39 @@ MonoBehaviour:
   - sprite: {fileID: 21300000, guid: 1d59c838c7dab7a42ab8a3a078021a95, type: 3}
     winAudioClip: {fileID: 8300000, guid: 543b266e6fa5c4c42bcf6956874c1518, type: 3}
     specialVideo: {fileID: 32900000, guid: f0cc30f568f35374d8bd53e12c020cd9, type: 3}
-    pointsForSprite: 100
+    pointsForSprite: 1000
     isBonusSprite: 1
     battleVideo: {fileID: 32900000, guid: ab864c55380c4b74482afd53454db4aa, type: 3}
     victoryVideo: {fileID: 32900000, guid: 240bf5ee90acb2f4e810b09648df4e63, type: 3}
     defeatVideo: {fileID: 32900000, guid: cfe0057c3c5d2ec42a1631362621d7cd, type: 3}
-    hitProbability: 0.56
+    hitProbability: 0.51
+  - sprite: {fileID: 21300000, guid: 5153ddb5355f2bc448a67bf03bef804b, type: 3}
+    winAudioClip: {fileID: 8300000, guid: 543b266e6fa5c4c42bcf6956874c1518, type: 3}
+    specialVideo: {fileID: 32900000, guid: f0cc30f568f35374d8bd53e12c020cd9, type: 3}
+    pointsForSprite: 1000
+    isBonusSprite: 1
+    battleVideo: {fileID: 32900000, guid: ab864c55380c4b74482afd53454db4aa, type: 3}
+    victoryVideo: {fileID: 32900000, guid: 240bf5ee90acb2f4e810b09648df4e63, type: 3}
+    defeatVideo: {fileID: 32900000, guid: cfe0057c3c5d2ec42a1631362621d7cd, type: 3}
+    hitProbability: 0.01
+  - sprite: {fileID: 21300000, guid: 79c79c38309b6704f874e8ebdc98c843, type: 3}
+    winAudioClip: {fileID: 8300000, guid: 543b266e6fa5c4c42bcf6956874c1518, type: 3}
+    specialVideo: {fileID: 32900000, guid: f0cc30f568f35374d8bd53e12c020cd9, type: 3}
+    pointsForSprite: 1000
+    isBonusSprite: 1
+    battleVideo: {fileID: 32900000, guid: ab864c55380c4b74482afd53454db4aa, type: 3}
+    victoryVideo: {fileID: 32900000, guid: 240bf5ee90acb2f4e810b09648df4e63, type: 3}
+    defeatVideo: {fileID: 32900000, guid: cfe0057c3c5d2ec42a1631362621d7cd, type: 3}
+    hitProbability: 0.01
+  - sprite: {fileID: 21300000, guid: d78c87ffa2f1ed64da1a9c3ea124a86b, type: 3}
+    winAudioClip: {fileID: 8300000, guid: 543b266e6fa5c4c42bcf6956874c1518, type: 3}
+    specialVideo: {fileID: 32900000, guid: f0cc30f568f35374d8bd53e12c020cd9, type: 3}
+    pointsForSprite: 1000
+    isBonusSprite: 1
+    battleVideo: {fileID: 32900000, guid: ab864c55380c4b74482afd53454db4aa, type: 3}
+    victoryVideo: {fileID: 32900000, guid: 240bf5ee90acb2f4e810b09648df4e63, type: 3}
+    defeatVideo: {fileID: 32900000, guid: cfe0057c3c5d2ec42a1631362621d7cd, type: 3}
+    hitProbability: 0.01
 --- !u!1 &1211083838
 GameObject:
   m_ObjectHideFlags: 0
