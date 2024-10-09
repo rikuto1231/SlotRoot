@@ -6,13 +6,18 @@ public class QuitButton : MonoBehaviour
     [SerializeField] private Button quitButton; // UIの終了ボタン
     [SerializeField] private ReelManager reelManager; // ReelManagerスクリプトへの参照（ポイントリセット用）
 
-    private void Start()
+private void Start()
+{
+    if (quitButton != null)
     {
-        if (quitButton != null)
-        {
-            quitButton.onClick.AddListener(OnQuitButtonPressed); // ボタンが押されたときにOnQuitButtonPressedを呼び出す
-        }
+        // 既存のリスナーをクリア
+        quitButton.onClick.RemoveAllListeners();
+        
+        // 新しいリスナーを追加
+        quitButton.onClick.AddListener(OnQuitButtonPressed);
     }
+}
+
 
     // 終了ボタンが押されたときに呼び出されるメソッド
     private void OnQuitButtonPressed()

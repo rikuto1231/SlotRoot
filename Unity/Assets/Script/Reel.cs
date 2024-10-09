@@ -84,7 +84,7 @@ public class Reel : MonoBehaviour
                 // スプライトのインデックスを更新
                 currentSpriteIndex = (currentSpriteIndex + 1) % sprites.Length;
                 spriteRenderer.sprite = sprites[currentSpriteIndex];
-                Debug.Log($"リールのスプライトを {currentSpriteIndex} に更新しました。");
+                // Debug.Log($"リールのスプライトを {currentSpriteIndex} に更新しました。");
             }
 
             // フレームレート非依存の回転処理
