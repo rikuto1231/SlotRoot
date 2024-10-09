@@ -77,11 +77,27 @@ public void PlayBattleVideo(VideoClip battleClip)
 {
     if (videoPlayer != null && battleClip != null)
     {
-        videoPlayer.isLooping = true;    // ループ再生を有効化
+        videoPlayer.isLooping = true;    // 戦闘動画はループ再生を有効化
         videoPlayer.clip = battleClip;   // 指定された戦闘動画をセット
         videoPlayer.SetDirectAudioMute(0, true); // トラック0の映像の音声を無効
         videoPlayer.Play();              // 戦闘動画を再生
+
+        // ボーナス終了時にループを無効にする処理
+        videoPlayer.loopPointReached += OnBattleVideoEnd; // 動画が終わった際のイベントを設定
     }
 }
+
+// 戦闘動画が終了したときに呼ばれる処理
+private void OnBattleVideoEnd(VideoPlayer vp)
+{
+    videoPlayer.isLooping = false;   // ループ再生を無効化
+    videoPlayer.clip = defaultClip;  // デフォルトの動画に戻す
+    videoPlayer.SetDirectAudioMute(0, true); // トラック0の映像の音声をミュート
+    videoPlayer.Play();              // デフォルトの動画を再生
+
+    // イベントリスナーを解除
+    videoPlayer.loopPointReached -= OnBattleVideoEnd;
+}
+
 
 }

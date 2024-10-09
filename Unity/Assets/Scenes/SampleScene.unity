@@ -258,7 +258,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 1
   m_Sprite: {fileID: 21300000, guid: 5153ddb5355f2bc448a67bf03bef804b, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -1203,7 +1203,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   frameRenderer: {fileID: 936791221}
-  blinkColor: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
+  defaultColor: {r: 1, g: 1, b: 1, a: 0}
   blinkDuration: 0.5
   blinkCount: 5
 --- !u!1 &943918322
@@ -1328,46 +1328,55 @@ MonoBehaviour:
   - {fileID: 2137441527}
   - {fileID: 1497880929}
   videoPlayManager: {fileID: 450733334}
-  winSound: {fileID: 1891888130}
+  specialAudioSource: {fileID: 619631240}
   pointText: {fileID: 1490862754}
   outerFrameEffect: {fileID: 936791223}
+  spacePressSound: {fileID: 8300000, guid: bbe864d9b9cdfdf4f9e02d973423cd85, type: 3}
   spriteEffects:
   - sprite: {fileID: 21300000, guid: 1d59c838c7dab7a42ab8a3a078021a95, type: 3}
-    winAudioClip: {fileID: 8300000, guid: 543b266e6fa5c4c42bcf6956874c1518, type: 3}
+    specialAudioClip: {fileID: 8300000, guid: 543b266e6fa5c4c42bcf6956874c1518, type: 3}
     specialVideo: {fileID: 32900000, guid: f0cc30f568f35374d8bd53e12c020cd9, type: 3}
     pointsForSprite: 1000
     isBonusSprite: 1
-    battleVideo: {fileID: 32900000, guid: ab864c55380c4b74482afd53454db4aa, type: 3}
+    battleVideo: {fileID: 32900000, guid: b342126922297ee4da64283c553556aa, type: 3}
     victoryVideo: {fileID: 32900000, guid: 240bf5ee90acb2f4e810b09648df4e63, type: 3}
     defeatVideo: {fileID: 32900000, guid: cfe0057c3c5d2ec42a1631362621d7cd, type: 3}
-    hitProbability: 0.51
+    hitProbability: 0
+    victoryAudioClip: {fileID: 0}
+    defeatAudioClip: {fileID: 0}
   - sprite: {fileID: 21300000, guid: 5153ddb5355f2bc448a67bf03bef804b, type: 3}
-    winAudioClip: {fileID: 8300000, guid: 543b266e6fa5c4c42bcf6956874c1518, type: 3}
-    specialVideo: {fileID: 32900000, guid: f0cc30f568f35374d8bd53e12c020cd9, type: 3}
+    specialAudioClip: {fileID: 8300000, guid: 543b266e6fa5c4c42bcf6956874c1518, type: 3}
+    specialVideo: {fileID: 32900000, guid: ab864c55380c4b74482afd53454db4aa, type: 3}
     pointsForSprite: 1000
     isBonusSprite: 1
     battleVideo: {fileID: 32900000, guid: ab864c55380c4b74482afd53454db4aa, type: 3}
     victoryVideo: {fileID: 32900000, guid: 240bf5ee90acb2f4e810b09648df4e63, type: 3}
     defeatVideo: {fileID: 32900000, guid: cfe0057c3c5d2ec42a1631362621d7cd, type: 3}
-    hitProbability: 0.01
+    hitProbability: 0
+    victoryAudioClip: {fileID: 8300000, guid: ebf56fd0a38b35244bf262e6d2d6a65c, type: 3}
+    defeatAudioClip: {fileID: 8300000, guid: ebf56fd0a38b35244bf262e6d2d6a65c, type: 3}
   - sprite: {fileID: 21300000, guid: 79c79c38309b6704f874e8ebdc98c843, type: 3}
-    winAudioClip: {fileID: 8300000, guid: 543b266e6fa5c4c42bcf6956874c1518, type: 3}
-    specialVideo: {fileID: 32900000, guid: f0cc30f568f35374d8bd53e12c020cd9, type: 3}
+    specialAudioClip: {fileID: 8300000, guid: 543b266e6fa5c4c42bcf6956874c1518, type: 3}
+    specialVideo: {fileID: 32900000, guid: da651ca3a5f544e4fa056ae526d584d9, type: 3}
     pointsForSprite: 1000
     isBonusSprite: 1
-    battleVideo: {fileID: 32900000, guid: ab864c55380c4b74482afd53454db4aa, type: 3}
-    victoryVideo: {fileID: 32900000, guid: 240bf5ee90acb2f4e810b09648df4e63, type: 3}
-    defeatVideo: {fileID: 32900000, guid: cfe0057c3c5d2ec42a1631362621d7cd, type: 3}
-    hitProbability: 0.01
+    battleVideo: {fileID: 32900000, guid: aa4a2ac4272655344aceb979bfd811f3, type: 3}
+    victoryVideo: {fileID: 32900000, guid: 9b5a030bb3cc9b24a916c33c5170b367, type: 3}
+    defeatVideo: {fileID: 32900000, guid: f42e7545f759c6e41b0b903e9a2421de, type: 3}
+    hitProbability: 0.251
+    victoryAudioClip: {fileID: 8300000, guid: 813e9ce93137ea649af4d0927a6611ac, type: 3}
+    defeatAudioClip: {fileID: 8300000, guid: 7b26d91e94d3c1b4481a53a845c66c6d, type: 3}
   - sprite: {fileID: 21300000, guid: d78c87ffa2f1ed64da1a9c3ea124a86b, type: 3}
-    winAudioClip: {fileID: 8300000, guid: 543b266e6fa5c4c42bcf6956874c1518, type: 3}
+    specialAudioClip: {fileID: 8300000, guid: 543b266e6fa5c4c42bcf6956874c1518, type: 3}
     specialVideo: {fileID: 32900000, guid: f0cc30f568f35374d8bd53e12c020cd9, type: 3}
     pointsForSprite: 1000
     isBonusSprite: 1
     battleVideo: {fileID: 32900000, guid: ab864c55380c4b74482afd53454db4aa, type: 3}
     victoryVideo: {fileID: 32900000, guid: 240bf5ee90acb2f4e810b09648df4e63, type: 3}
     defeatVideo: {fileID: 32900000, guid: cfe0057c3c5d2ec42a1631362621d7cd, type: 3}
-    hitProbability: 0.01
+    hitProbability: 0
+    victoryAudioClip: {fileID: 0}
+    defeatAudioClip: {fileID: 0}
 --- !u!1 &1211083838
 GameObject:
   m_ObjectHideFlags: 0
@@ -1707,7 +1716,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 1
   m_Sprite: {fileID: 21300000, guid: 5153ddb5355f2bc448a67bf03bef804b, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -2462,7 +2471,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 1
   m_Sprite: {fileID: 21300000, guid: 5153ddb5355f2bc448a67bf03bef804b, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0

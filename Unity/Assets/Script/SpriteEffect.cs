@@ -5,7 +5,7 @@ using UnityEngine.Video;
 public class SpriteEffect
 {
     public Sprite sprite;                // スプライト
-    public AudioClip winAudioClip;        // 当たり音声
+    public AudioClip specialAudioClip;   // 登場音声
     public VideoClip specialVideo;        // 登場動画
     public int pointsForSprite;           // スプライトごとに付与されるポイント
 
@@ -14,21 +14,28 @@ public class SpriteEffect
     public VideoClip victoryVideo;        // 勝利動画
     public VideoClip defeatVideo;         // 敗北動画
 
-        [Range(0f, 1f)] // スライダーで調整可能
-    public float hitProbability; // 当たる確率（0.0～1.0）
+    [Range(0f, 1f)] // スライダーで調整可能
+    public float hitProbability;           // 当たる確率（0.0～1.0）
 
-    // コンストラクタで初期化を行う（必要に応じて省略可能）
+    // 新しく追加されたプロパティ
+    public AudioClip victoryAudioClip;    // 勝利時音声
+    public AudioClip defeatAudioClip;      // 敗北時音声
+
+    // コンストラクタで初期化を行う（新しいプロパティを追加）
     public SpriteEffect(Sprite sprite, AudioClip winAudio, VideoClip specialVid, int points, 
-                        bool isBonus, VideoClip battleVid, VideoClip victoryVid, VideoClip defeatVid)
+                        bool isBonus, VideoClip battleVid, VideoClip victoryVid, VideoClip defeatVid, 
+                        AudioClip victoryAudio, AudioClip defeatAudio)
     {
         this.sprite = sprite;
-        this.winAudioClip = winAudio;
+        this.specialAudioClip = winAudio;
         this.specialVideo = specialVid;
         this.pointsForSprite = points;
         this.isBonusSprite = isBonus;
         this.battleVideo = battleVid;
         this.victoryVideo = victoryVid;
         this.defeatVideo = defeatVid;
+        this.victoryAudioClip = victoryAudio; // 勝利時音声
+        this.defeatAudioClip = defeatAudio;   // 敗北時音声
     }
 
     // ボーナス状態かどうかを判定するメソッド
