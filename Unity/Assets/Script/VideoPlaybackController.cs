@@ -72,5 +72,16 @@ public class VideoPlaybackController : MonoBehaviour
         videoPlayer.loopPointReached -= OnSpecialVideoEnd;
     }
 
-    // 戦闘動画流すループ設定のメソッドを記述予定
+    // 戦闘動画をループ再生するメソッド
+public void PlayBattleVideo(VideoClip battleClip)
+{
+    if (videoPlayer != null && battleClip != null)
+    {
+        videoPlayer.isLooping = true;    // ループ再生を有効化
+        videoPlayer.clip = battleClip;   // 指定された戦闘動画をセット
+        videoPlayer.SetDirectAudioMute(0, true); // トラック0の映像の音声を無効
+        videoPlayer.Play();              // 戦闘動画を再生
+    }
+}
+
 }
