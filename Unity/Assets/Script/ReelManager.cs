@@ -7,6 +7,7 @@ public class ReelManager : MonoBehaviour
 {
     [SerializeField] private List<Reel> reels;
     [SerializeField] private VideoPlaybackController videoPlayManager;
+    [SerializeField] private VideoPlaybackController videoPlaybackController; // VideoPlaybackControllerのインスタンス
     [SerializeField] private AudioSource specialAudioSource;
     [SerializeField] private TextMeshProUGUI pointText;
     [SerializeField] private OuterFrameEffect outerFrameEffect; // OuterFrameEffectを追加
@@ -23,9 +24,12 @@ public class ReelManager : MonoBehaviour
     private bool isInBonusState = false; // ボーナス状態かどうか
     private SpriteEffect effect; // 現在のスプライト効果
     private bool isBattleResultChecked = false; // バトル結果がチェックされたかどうか
+    private bool canReplay = false; //リプレイ判断
+
 
     private void Start()
     {
+        videoPlaybackController = FindObjectOfType<VideoPlaybackController>();
         InitializePoints(); // 初期ポイントの設定
         UpdatePointDisplay(); // ポイントの表示を更新
     }
@@ -34,7 +38,7 @@ public class ReelManager : MonoBehaviour
     {
 
         // スペースキーでリールを回転させる
-        if (Input.GetKeyDown(KeyCode.Space) && canRotate && !isInBonusState && !isReelActive)
+        if (Input.GetKeyDown(KeyCode.Space) && canRotate && !isInBonusState && !isReelActive && !videoPlaybackController.IsVictoryVideoPlaying)
         {
             Debug.Log($"通常側の状態 - canRotate: {canRotate}, isInBonusState: {isInBonusState}, isReelActive: {isReelActive}, playerPoints: {playerPoints}, rotationCount: {rotationCount}, bonusReelCount: {bonusReelCount}");
             Debug.Log("通常１．リールを回転させる処理を開始"); // 通常状態のログ
@@ -46,7 +50,7 @@ public class ReelManager : MonoBehaviour
         }
 
         // ボーナス状態中の回転処理
-        if (Input.GetKeyDown(KeyCode.Space) && canRotate && isInBonusState && !isReelActive)
+        if (Input.GetKeyDown(KeyCode.Space) && canRotate && isInBonusState && !isReelActive && !videoPlaybackController.IsVictoryVideoPlaying)
         {
             Debug.Log($"ボーナス側の状態 - canRotate: {canRotate}, isInBonusState: {isInBonusState}, isReelActive: {isReelActive}, playerPoints: {playerPoints}, rotationCount: {rotationCount}, bonusReelCount: {bonusReelCount}");
             Debug.Log("ボーナス１．ボーナス状態中のリール回転処理を開始"); // ボーナス状態のログ
@@ -240,12 +244,20 @@ public class ReelManager : MonoBehaviour
             {
                 Debug.Log("通常６．スプライトがボーナス効果に関連していない"); // 通常状態のログ
             }
+
+            // リプレイ可能かどうかをチェック
+            if (effect.allowsReplay)
+            {
+                canReplay = true; // リプレイフラグをセット
+                Debug.Log("リプレイが可能です");
+            }
         }
         else
         {
             Debug.Log("通常７．スプライトが整列していない"); // 通常状態のログ
         }
     }
+
 
     private void UpdatePointDisplay()
     {

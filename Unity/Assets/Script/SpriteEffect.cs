@@ -20,23 +20,26 @@ public class SpriteEffect
     // 新しく追加されたプロパティ
     public AudioClip victoryAudioClip;    // 勝利時音声
     public AudioClip defeatAudioClip;      // 敗北時音声
+    public bool allowsReplay; // このスプライトがリプレイを許可するか
 
-    // コンストラクタで初期化を行う（新しいプロパティを追加）
-    public SpriteEffect(Sprite sprite, AudioClip winAudio, VideoClip specialVid, int points, 
-                        bool isBonus, VideoClip battleVid, VideoClip victoryVid, VideoClip defeatVid, 
-                        AudioClip victoryAudio, AudioClip defeatAudio)
-    {
-        this.sprite = sprite;
-        this.specialAudioClip = winAudio;
-        this.specialVideo = specialVid;
-        this.pointsForSprite = points;
-        this.isBonusSprite = isBonus;
-        this.battleVideo = battleVid;
-        this.victoryVideo = victoryVid;
-        this.defeatVideo = defeatVid;
-        this.victoryAudioClip = victoryAudio; // 勝利時音声
-        this.defeatAudioClip = defeatAudio;   // 敗北時音声
-    }
+
+public SpriteEffect(Sprite sprite, AudioClip winAudio, VideoClip specialVid, int points, 
+                    bool isBonus, VideoClip battleVid, VideoClip victoryVid, VideoClip defeatVid, 
+                    AudioClip victoryAudio, AudioClip defeatAudio, bool allowsReplay)
+{
+    this.sprite = sprite;
+    this.specialAudioClip = winAudio;
+    this.specialVideo = specialVid;
+    this.pointsForSprite = points;
+    this.isBonusSprite = isBonus;
+    this.battleVideo = battleVid;
+    this.victoryVideo = victoryVid;
+    this.defeatVideo = defeatVid;
+    this.victoryAudioClip = victoryAudio; // 勝利時音声
+    this.defeatAudioClip = defeatAudio;   // 敗北時音声
+    this.allowsReplay = allowsReplay;      // リプレイを許可するか
+}
+
 
     // ボーナス状態かどうかを判定するメソッド
     public bool IsBonus()
