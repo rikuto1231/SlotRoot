@@ -4,81 +4,116 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>麻生無双</title>
-    <link href="https://fonts.googleapis.com/css2?family=Shippori+Mincho+B1:wght@900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Sawarabi+Mincho&display=swap" rel="stylesheet">
     <style>
+        @font-face {
+            font-family: "Shodou";
+            src: url("./tmp_m.ttf") format('truetype');
+        }
+
         body {
             background-color: #fff;
+            color: #000;
             text-align: center;
             margin: 0;
             padding: 0;
-            font-family: 'Shippori Mincho B1', serif;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
         }
 
         header {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 20px;
+            padding: 5px 10px;
+            width: 100%;
         }
 
         .points-trophy {
             display: flex;
             flex-direction: column;
-            align-items: center;
-            border: 1px solid #000;
-            border-radius: 50px;
-            padding: 10px;
-            width: 80px;
-            margin-left: 20px;
+            gap: 5px;
+            margin-left: 10px;
         }
 
         .points, .trophy {
             display: flex;
             align-items: center;
             justify-content: center;
+            border: 2px solid #000;
+            border-radius: 50px;
+            padding: 5px;
+            width: 140px;
+            height: 50px;
+            font-size: 16px;
         }
 
         .points span, .trophy span {
-            font-size: 20px;
+            font-size: 16px;
             margin-left: 5px;
         }
 
         .login-buttons {
-            margin-right: 20px;
+            margin-right: 10px;
         }
 
         .login-buttons button {
             display: block;
             background: none;
-            border: 1px solid #000;
-            border-radius: 20px;
+            border: 2px solid #000;
+            border-radius: 30px;
             padding: 10px 20px;
             margin-bottom: 10px;
-            font-size: 16px;
+            font-size: 18px;
         }
 
         h1 {
-            font-size: 60px;
+            font-family: "Shodou", sans-serif; 
+            font-size: 180px; 
             color: #000;
-            margin: 40px 0;
+            margin: 0;
+            margin-top: 20px;
+            white-space: nowrap; 
+            letter-spacing: 15px; 
         }
 
         .main-buttons {
             display: flex;
             flex-direction: column;
-            gap: 20px;
-            margin-top: 40px;
+            align-items: center;
+            gap: 10px;
+            margin: 0;
+            padding-bottom: 0;
+            flex-grow: 1;
+            justify-content: center;
         }
 
         .main-buttons button {
-            width: 200px;
-            padding: 20px;
-            border: 1px solid #000;
+            font-family: "Shodou", sans-serif; /* フォントの指定を追加 */
+            width: 300px;
+            padding: 30px;
+            border: 2px solid #000;
             border-radius: 50px;
-            font-size: 24px;
+            font-size: 28px;
             background-color: #fff;
             cursor: pointer;
+            margin-bottom: 0;
         }
+
+        .play-button {
+            color: red; /* プレイボタンの文字色を赤に設定 */
+        }
+
+        .exchange-button {
+            color: #32CD32; /* 交換ボタンの文字色を黄緑に設定 */
+        }
+
+        .ranking-button {
+            color: gold; /* ランキングボタンの文字色を金に設定 */
+        }
+
     </style>
 </head>
 <body>
@@ -104,9 +139,9 @@
     </header>
 
     <section class="main-buttons">
-        <button>プレイ</button>
-        <button>交換</button>
-        <button>ランキング</button>
+        <button class="play-button">プレイ</button>
+        <button class="exchange-button">交換</button>
+        <button class="ranking-button">ランキング</button>
     </section>
 
 </body>
