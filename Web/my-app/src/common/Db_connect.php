@@ -38,7 +38,7 @@ function getDatabaseConnection() {
     $host = 'mysql212.phy.lolipop.lan';
     $dbname = 'LAA1517437-development';
     $user = 'LAA1517437';
-    $pass = 'pass1015';
+    $pass = 'Pass1015';
 
     $dbConnection = new DatabaseConnection($host, $dbname, $user, $pass);
     return $dbConnection->getPDO();
