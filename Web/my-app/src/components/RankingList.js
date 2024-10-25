@@ -5,9 +5,17 @@ const RankingList = () => {
 
     useEffect(() => {
         const fetchRankings = async () => {
-            const response = await fetch('/api/get_rankings.php'); // APIのパスを指定
-            const data = await response.json();
-            setRankings(data);
+            try {
+                const response = await fetch('/api/get_rankings.php'); // APIのパスを指定
+                if (!response.ok) {
+                    throw new Error('ネットワークエラー');
+                }
+                const data = await response.json();
+                console.log('Rankings fetched:', data); // デバッグログ
+                setRankings(data);
+            } catch (error) {
+                console.error('データの取得に失敗しました:', error);
+            }
         };
 
         fetchRankings();
@@ -27,6 +35,9 @@ const RankingList = () => {
             } else {
                 console.error('エラーが発生しました');
             }
+        })
+        .catch(error => {
+            console.error('ユーザセッションの設定に失敗しました:', error);
         });
     };
 

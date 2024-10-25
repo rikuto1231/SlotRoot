@@ -7,6 +7,8 @@ $stmt = $pdo->prepare($sql);
 $stmt->execute();
 $rankings = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
+error_log('Rankings fetched: ' . json_encode($rankings));
+
 header('Content-Type: application/json');
 echo json_encode($rankings);
 ?>

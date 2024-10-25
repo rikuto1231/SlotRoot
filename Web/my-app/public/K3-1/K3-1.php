@@ -5,9 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>React Ranking App</title>
     <link rel="stylesheet" href="K3-1.css">
-
 </head>
 <body>
     <div id="root"></div>
+    <script src="static/js/bundle.js"></script> <!-- Reactアプリのビルドファイル -->
 </body>
 </html>
