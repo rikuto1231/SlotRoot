@@ -1,0 +1,93 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-image: url('../img/loginback1.jpeg'); /* 背景画像 */
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+.container {
+    max-width: 400px;
+    margin: 20px auto;
+    padding: 20px;
+    
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* 柔らかい影を追加 */
+}
+
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.points {
+    display: flex;
+    align-items: center;
+    font-size: 18px;
+}
+
+.points img {
+    width: 24px;
+    height: 24px;
+    margin-right: 5px;
+}
+
+.back-btn {
+    font-size: 14px;
+    padding: 5px 10px;
+    border: 1px solid #ff0000;
+    border-radius: 10px;
+    background-color: #ffdddd; /* 薄い赤 */
+    cursor: pointer;
+    transition: background-color 0.3s; /* スムーズな遷移 */
+}
+
+.back-btn:hover {
+    background-color: #ffcccc; /* ホバー時に濃い赤 */
+}
+
+.achievement {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border: 1px solid #ffcccc; /* 薄い赤の境界線 */
+    padding: 10px;
+    margin-bottom: 10px;
+    background-color: rgba(255, 255, 255, 0.8); /* 明るい背景 */
+    border-radius: 5px; /* 輪郭を少し丸く */
+}
+
+.achievement img {
+    width: 40px;
+    height: 40px;
+}
+
+.achievement-name {
+    font-size: 16px;
+    flex-grow: 1;
+    margin-left: 10px;
+}
+
+.points-text {
+    font-size: 20px;
+    font-weight: bold;
+    display: flex; /* フレックスボックスを使用 */
+    justify-content: center; /* 中央寄せ */
+}
+
+.exchange-btn {
+    font-size: 14px;
+    padding: 5px 10px;
+    border: 1px solid #ff0000;
+    border-radius: 10px;
+    background-color: #ffdddd; /* 薄い赤 */
+    cursor: pointer;
+    transition: background-color 0.3s; /* スムーズな遷移 */
+}
+
+.exchange-btn:hover {
+    background-color: #ffcccc; /* ホバー時に濃い赤 */
+}
