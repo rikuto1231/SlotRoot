@@ -1,0 +1,136 @@
+/* 全体背景の設定 */
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-image: url('./back_img.jpeg'); /* 背景画像 */
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    color: #fff; /* 文字色を白にして背景とコントラスト */
+}
+
+@font-face {
+    font-family: "Shodou";
+    src: url("../tmp_m.ttf") format('truetype');
+}
+
+/* コンテナ */
+.container {
+    height: 100%;
+    width: 100%;
+    margin: 0;
+    padding: 0px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    background: rgba(0, 0, 0, 0.7); /* 背景に黒の透過で暗くする */
+    border-radius: 15px;
+}
+
+/* ヘッダー */
+.header {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 20px;
+    text-shadow: 2px 2px 4px #000;
+}
+
+.header h1 {
+    font-family: "Shodou", sans-serif;
+    font-size: 56px;
+    font-weight: bold;
+    text-align: center;
+    margin: 8px;
+    color: #FFD700; /* ゴールド */
+    background: linear-gradient(45deg, #FFD700, #FF8C00); /* ゴールドからオレンジのグラデ */
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+/* 戻るボタン */
+.back-btn {
+    position: absolute;
+    right: 10px;
+    top: 10px;
+    font-size: 20px;
+    padding: 5px 10px;
+    border: 1px solid #FFD700;
+    border-radius: 10px;
+    background-color: #333;
+    color: #FFD700;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    box-shadow: 0 2px 4px rgba(255, 215, 0, 0.6);
+}
+
+.back-btn:hover {
+    background-color: #444;
+}
+
+/* ランキングリスト */
+.ranking-list {
+    max-height: 700px;
+    overflow-y: auto;
+    margin: 0 auto;
+    background-color: rgba(255, 255, 255, 0.1);
+    border-radius: 10px;
+    padding: 20px;
+}
+
+/* 各順位 */
+.achievement {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border: 2px solid #FFD700;
+    padding: 15px;
+    margin-bottom: 15px;
+    background: linear-gradient(45deg, rgba(255, 215, 0, 0.3), rgba(255, 140, 0, 0.3));
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(255, 215, 0, 0.4);
+}
+
+.rank {
+    font-size: 28px;
+    font-weight: bold;
+    color: #FFD700;
+}
+
+.name {
+    font-size: 24px;
+    flex-grow: 1;
+    text-align: center;
+    margin: 0 10px;
+    color: #FFF;
+}
+
+.points {
+    font-size: 26px;
+    font-weight: bold;
+    color: #FFD700;
+}
+
+/* ランキング順位アイコンのホバー */
+.rank:hover, .points:hover {
+    text-shadow: 0 0 8px rgba(255, 215, 0, 0.8);
+    transition: text-shadow 0.3s ease;
+}
+
+/* フッター */
+.footer {
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 15px;
+    padding-right: 35px;
+    background-color: rgba(0, 0, 0, 0.8);
+    border-top: 2px solid #FFD700;
+    box-sizing: border-box;
+    font-size: 18px;
+    color: #FFD700;
+    text-shadow: 1px 1px 3px #000;
+}
