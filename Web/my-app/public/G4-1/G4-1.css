@@ -42,9 +42,9 @@ body {
 .back-btn {
     font-size: 14px;
     padding: 5px 10px;
-    border: 1px solid #ff0000;
+    border: 1px solid #ecebeb;
     border-radius: 10px;
-    background-color: #ffdddd; /* 薄い赤 */
+    background-color: #ffffff; 
     cursor: pointer;
     transition: background-color 0.3s; /* スムーズな遷移 */
 }
