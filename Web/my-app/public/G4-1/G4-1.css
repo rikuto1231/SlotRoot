@@ -20,33 +20,36 @@ body {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 20px;
+    margin-bottom: 30px;
 }
 
 /* 既存のスタイル... */
 
 #points {
     color: #ffffff; /* 白色 */
-    font-size: 24px; /* フォントサイズを大きく */
+    font-size: 50px; /* フォントサイズを大きく */
     font-weight: bold; /* 太字 */
     text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.7); /* 薄い影 */
 }
 
 
 .points img {
-    width: 24px;
-    height: 24px;
+    width: 50px;
+    height: 50px;
     margin-right: 5px;
 }
 
-.back-btn {
-    font-size: 14px;
-    padding: 5px 10px;
-    border: 1px solid #ecebeb;
-    border-radius: 10px;
-    background-color: #ffffff; 
-    cursor: pointer;
-    transition: background-color 0.3s; /* スムーズな遷移 */
+.back-button {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background-color: black;
+    border: 2px solid white;
+    padding: 10px 20px;
+    border-radius: 25px;
+    color: white;
+    text-decoration: none;
+    transition: 0.25s;
 }
 
 .back-btn:hover {
@@ -58,15 +61,15 @@ body {
     justify-content: space-between;
     align-items: center;
     border: 1px solid #ffcccc; /* 薄い赤の境界線 */
-    padding: 10px;
-    margin-bottom: 10px;
+    padding: 30px;
+    margin-bottom: 30px;
     background-color: rgba(255, 255, 255, 0.8); /* 明るい背景 */
     border-radius: 5px; /* 輪郭を少し丸く */
 }
 
 .achievement img {
-    width: 40px;
-    height: 40px;
+    width: 60px;
+    height: 60px;
 }
 
 .achievement-name {
@@ -96,3 +99,4 @@ body {
 .exchange-btn:hover {
     background-color: #ffcccc; /* ホバー時に濃い赤 */
 }
+
