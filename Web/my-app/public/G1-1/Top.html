@@ -8,7 +8,7 @@
     <style>
         @font-face {
             font-family: "Shodou";
-            src: url("./tmp_m.ttf") format('truetype');
+            src: url("../tmp_m.ttf") format('truetype');
         }
 
         body {
@@ -17,7 +17,8 @@
             text-align: center;
             margin: 0;
             padding: 0;
-            height: 100vh;
+            height: 100%;
+            width: auto;
             display: flex;
             flex-direction: column;
             justify-content: flex-start;
@@ -25,13 +26,13 @@
             background-size: cover;
             background-position: center;
             background-repeat: no-repeat;
+            background-attachment: fixed;
         }
 
         header {
             display: flex;
-            justify-content: center; /* 全体を中央に寄せる */
+            justify-content: center;
             align-items: center;
-            padding: 5px 20px;
             width: 100%;
             gap: 20px;
         }
@@ -68,7 +69,11 @@
             flex-direction: column;
             align-items: center;
             gap: 10px;
-            margin-right: -50px; /* 横の余白を調整 */
+            margin-right: -50px;
+        }
+
+        .login-buttons a {
+            text-decoration: none; /* 青い線を消す */
         }
 
         .login-buttons button {
@@ -108,6 +113,7 @@
             align-items: center;
             gap: 10px;
             margin: 0 auto;
+            margin-top: 50px;
             padding-bottom: 0;
             flex-grow: 1;
             justify-content: center;
@@ -125,25 +131,21 @@
             transition: transform 0.3s ease;
         }
 
-        /* プレイボタン */
         .play-button {
             color: red;
             border: 2px solid red;
         }
 
-        /* 交換ボタン */
         .exchange-button {
             color: #32CD32;
             border: 2px solid #32CD32;
         }
 
-        /* ランキングボタン */
         .ranking-button {
             color: gold;
             border: 2px solid gold;
         }
 
-        /* ホバー時のアクション */
         .points:hover, .trophy:hover, .login-buttons button:hover, .main-buttons button:hover {
             transform: rotate(10deg);
         }
@@ -166,8 +168,12 @@
         <h1>麻生無双</h1>
 
         <div class="login-buttons">
-            <button>新規登録</button>
-            <button>ログイン/ログアウト</button>
+            <a href="../G2-1/new.html">
+                <button>新規登録</button>
+            </a>
+            <a href="../G3-1/login.html">
+                <button>ログイン/ログアウト</button>
+            </a>
         </div>
     </header>
 
