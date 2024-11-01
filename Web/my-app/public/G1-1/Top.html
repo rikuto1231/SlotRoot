@@ -159,10 +159,17 @@
                 <span>🅿</span>
                 <span>0000pt</span>
             </div>
-            <div class="trophy">
+            <div class="trophy" onclick="handleTrophyClick()">
                 <span>🏆</span>
                 <span style="color: blue;">00</span>
             </div>
+            
+            <script>
+                function handleTrophyClick() {
+                    // G6-1フォルダのach.htmlに遷移
+                    window.location.href = "../G6-1/ach.html";
+                }
+            </script>
         </div>
 
         <h1>麻生無双</h1>
@@ -180,7 +187,8 @@
 
     <section class="main-buttons">
         <button class="play-button">プレイ</button>
-        <button class="exchange-button">交換</button>
+            <a href="../G4-1/G4-1.html">
+                <button class="exchange-button">交換</button>
             <a href="../G5-1/G5-1.html">
                 <button class="ranking-button">ランキング</button>
             </a>
