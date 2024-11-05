@@ -16,7 +16,65 @@ body {
     background-color: #ffffff;
     border: 1px solid #ddd;
     border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 4px /* 全体のスタイル */
+    body {
+        font-family: Arial, sans-serif;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        margin: 0;
+        background-color: #f5f5f5;
+    }
+    
+    /* フォーム全体のスタイル */
+    .login-form {
+        width: 300px;
+        padding: 20px;
+        background-color: #ffffff;
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        text-align: center; /* 中央揃え */
+    }
+    
+    /* ラベルのスタイル */
+    .login-form label {
+        display: block;
+        font-size: 1rem;
+        margin-bottom: 8px;
+        text-align: left; /* 左寄せにする */
+    }
+    
+    
+    /* 入力欄のスタイル */
+    .login-form input[type="text"],
+    .login-form input[type="password"] {
+        width: 100%;
+        padding: 8px;
+        margin-bottom: 15px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        font-size: 1rem;
+        box-sizing: border-box; /* 幅を正確に指定 */
+    }
+    
+    /* ボタンのスタイル */
+    .login-form input[type="submit"] {
+        width: 100%;
+        padding: 10px;
+        background-color: #ffffff;
+        border: 1px solid #000;
+        border-radius: 20px;
+        font-size: 1rem;
+        cursor: pointer;
+        transition: background-color 0.3s;
+    }
+    
+    .login-form input[type="submit"]:hover {
+        background-color: #eee;
+    }
+    8px rgba(0, 0, 0, 0.1);
 }
 
 /* ラベルのスタイル */
