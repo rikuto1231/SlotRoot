@@ -1,5 +1,5 @@
 <?php
-require 'build/Db_connect.php';
+require '../../src/common/Db_connect.php';
 
 session_start();
 
