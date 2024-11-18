@@ -1,3 +1,11 @@
+<!-- ゲスト対応が分からないのでとりあえずセッション別型で維持 -->
+<?php
+session_start();
+$user = isset($_SESSION['user']) ? $_SESSION['user'] : 'ゲスト';
+$points = isset($_SESSION['points']) ? $_SESSION['points'] : 0;
+$trophy = isset($_SESSION['trophy']) ? $_SESSION['trophy'] : 0;
+?>
+
 <!DOCTYPE html>
 <html lang="ja">
 <head>
