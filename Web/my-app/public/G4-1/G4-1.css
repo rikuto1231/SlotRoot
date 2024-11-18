@@ -2,101 +2,104 @@ body {
     font-family: Arial, sans-serif;
     margin: 0;
     padding: 0;
-    background-image: url('../img/loginback1.jpeg'); /* 背景画像 */
+    background-image: url('./img/loginback1.jpeg'); /* 背景画像 */
     background-size: cover;
     background-position: center;
-    background-repeat: no-repeat;
 }
 
+
 .container {
-    max-width: 400px;
-    margin: 20px auto;
-    padding: 20px;
-    
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* 柔らかい影を追加 */
+    max-width: 90%;
+    margin: 5% auto;
+    padding: 2%;
+    background-color: rgba(0, 0, 0, 0.85); /* 濃いめの半透明背景 */
+    border-radius: 15px;
+    box-shadow: 0 0 10px rgba(255, 223, 0, 0.8); /* ネオン風影を控えめに */
 }
 
 .header {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 30px;
+    margin-bottom: 20px;
 }
-
-/* 既存のスタイル... */
 
 #points {
-    color: #ffffff; /* 白色 */
-    font-size: 50px; /* フォントサイズを大きく */
-    font-weight: bold; /* 太字 */
-    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.7); /* 薄い影 */
+    color: #ffd700; /* 濃い黄色 */
+    font-size: 3rem; /* フォントサイズ大 */
+    font-weight: bold;
+    text-shadow: 0 0 5px #ffaa00, 0 0 10px #ff8800; /* シャドウを小さく */
 }
-
 
 .points img {
     width: 50px;
     height: 50px;
-    margin-right: 5px;
+    margin-right: 10px;
 }
 
 .back-button {
-    position: absolute;
-    top: 10px;
-    right: 10px;
-    background-color: black;
-    border: 2px solid white;
+    background-color: transparent;
+    border: 2px solid #ffd700;
+    color: #ffd700;
     padding: 10px 20px;
     border-radius: 25px;
-    color: white;
-    text-decoration: none;
+    text-shadow: 0 0 3px #ffaa00, 0 0 7px #ff8800; /* 強調しすぎない */
+    cursor: pointer;
     transition: 0.25s;
 }
 
-.back-btn:hover {
-    background-color: #ffcccc; /* ホバー時に濃い赤 */
+.back-button:hover {
+    background-color: rgba(255, 223, 0, 0.2);
 }
 
 .achievement {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    border: 1px solid #ffcccc; /* 薄い赤の境界線 */
-    padding: 30px;
-    margin-bottom: 30px;
-    background-color: rgba(255, 255, 255, 0.8); /* 明るい背景 */
-    border-radius: 5px; /* 輪郭を少し丸く */
+    padding: 2%;
+    margin-bottom: 20px;
+    background-color: rgba(0, 0, 0, 0.9); /* 少し濃い背景 */
+    border-radius: 10px;
+    border: 2px solid #ffd700;
+    box-shadow: 0 0 5px #ffaa00, 0 0 10px #ff8800; /* シャドウを小さく控えめに */
 }
 
 .achievement img {
-    width: 60px;
-    height: 60px;
+    width: 15%;
+    max-width: 60px;
 }
 
 .achievement-name {
-    font-size: 16px;
+    font-size: 1.2rem;
+    color: #ffd700;
+    text-shadow: 0 0 5px #ffaa00, 0 0 10px #ff8800; /* シャドウを抑えた */
     flex-grow: 1;
     margin-left: 10px;
 }
 
 .points-text {
-    font-size: 20px;
+    font-size: 1.8rem;
     font-weight: bold;
-    text-align: center; /* 中央寄せ */
-    flex-grow: 1; /* スペースを均等に配分 */
+    color: #ffd700;
+    text-shadow: 0 0 5px #ffaa00, 0 0 10px #ff8800;
+    text-align: center;
+    padding: 15px;
 }
 
-
 .exchange-btn {
-    font-size: 14px;
-    padding: 5px 10px;
-    border: 1px solid #ff0000;
+    font-size: 1rem;
+    padding: 5px 15px;
+    background-color: black;
+    border: 2px solid #ffd700;
+    color: #ffd700;
     border-radius: 10px;
-    background-color: #ffdddd; /* 薄い赤 */
     cursor: pointer;
-    transition: background-color 0.3s; /* スムーズな遷移 */
+    text-shadow: 0 0 5px #ffaa00, 0 0 10px #ff8800; /* 控えめなネオン効果 */
+    transition: 0.3s;
+    width:14%;
+    height:100%;
 }
 
 .exchange-btn:hover {
-    background-color: #ffcccc; /* ホバー時に濃い赤 */
+    background-color: rgba(255, 223, 0, 0.2);
 }
-

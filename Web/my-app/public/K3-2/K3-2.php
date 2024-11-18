@@ -1,12 +1,12 @@
 <?php
 // DB接続
-require 'build/Db_connect.php';
-$baseUrl = '/build';
+require '../../src/common/Db_connect.php';
+
 
 $pdo = getDatabaseConnection();
 
-// ユーザー情報取得
-$sql = "SELECT user_id, name, password, point, created_at FROM user ORDER BY point DESC";
+
+$sql = "SELECT user_id, name, pass, point, create_at FROM user ORDER BY point DESC";
 $stmt = $pdo->prepare($sql);
 $stmt->execute();
 $rankings = $stmt->fetchAll(PDO::FETCH_ASSOC);
@@ -47,17 +47,17 @@ $rankings = $stmt->fetchAll(PDO::FETCH_ASSOC);
         echo '<tr>';
         echo '<td>' . ($index + 1) . '</td>';
         echo '<td>';
-        // ユーザー名をクリックするとPOSTでuser_idをセッションに保存
-        echo '<form method="POST" action="set_user_session.php" style="display:inline;">';
+
+        echo '<form method="POST" action="../K3-3/K3-3.php" style="display:inline;">';
         echo '<input type="hidden" name="user_id" value="' . htmlspecialchars($ranking['user_id']) . '">';
         echo '<button type="submit" style="border:none; background:none; color:blue; text-decoration:underline; cursor:pointer;">';
         echo htmlspecialchars($ranking['name']);
         echo '</button>';
         echo '</form>';
         echo '</td>';
-        echo '<td>' . htmlspecialchars($ranking['password']) . '</td>';
+        echo '<td>' . htmlspecialchars($ranking['pass']) . '</td>';
         echo '<td>' . htmlspecialchars($ranking['point']) . 'P</td>';
-        echo '<td>' . htmlspecialchars($ranking['created_at']) . '</td>';
+        echo '<td>' . htmlspecialchars($ranking['create_at']) . '</td>';
         echo '</tr>';
     }
     ?>

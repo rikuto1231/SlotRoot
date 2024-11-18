@@ -1,0 +1,81 @@
+/* 全体のスタイル */
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-image: url('./loginback1.jpeg'); /* 背景画像 */
+    background-size: cover;
+    background-position: center;
+}
+
+/* コンテナのスタイル */
+.container {
+    max-width: 90%;
+    margin: 10% auto; /* 戻るボタンと干渉しないよう上部余白を広げる */
+    padding: 1em;
+    background-color: rgba(0, 0, 0, 0.85); /* 濃いめの半透明背景 */
+    border-radius: 15px;
+    box-shadow: 0 0 10px rgba(255, 223, 0, 0.8); /* ネオン風影を控えめに */
+}
+
+/* 戻るボタン */
+.back-button {
+    position: fixed; /* スクロールしても位置を固定 */
+    top: 2%; /* 位置を微調整 */
+    right: 2%; /* 少し内側に寄せる */
+    z-index: 10; /* 他の要素より前面に配置 */
+    background-color: black; /* ボタン背景を黒に設定 */
+    border: 2px solid #ffd700; /* 黄色の境界線 */
+    color: #ffd700; /* 黄色の文字色 */
+    padding: 10px 20px;
+    border-radius: 25px;
+    font-weight: bold; /* 太字で強調 */
+    text-shadow: 0 0 3px #ffaa00, 0 0 7px #ff8800; /* 控えめなネオン効果 */
+    cursor: pointer;
+    transition: 0.3s; /* スムーズなホバー効果 */
+}
+
+.back-button:hover {
+    background-color: #ffd700; /* ホバー時に背景を黄色に */
+    color: black; /* ホバー時に文字色を黒に変更 */
+    text-shadow: none; /* ホバー時はシャドウをオフ */
+}
+
+
+
+
+/* 実績リストのスタイル */
+.items-wrapper {
+    margin-top: 5%;
+}
+
+/* 各実績のスタイル */
+.item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 2%;
+    margin-bottom: 20px;
+    background-color: rgba(0, 0, 0, 0.9); /* 少し濃い背景 */
+    border-radius: 10px;
+    border: 2px solid #ffd700;
+    box-shadow: 0 0 5px #ffaa00, 0 0 10px #ff8800; /* 控えめなネオン効果 */
+}
+
+/* 実績名のスタイル */
+.item-name span {
+    font-size: 1.4rem;
+    color: #ffd700;
+    text-shadow: 0 0 5px #ffaa00, 0 0 10px #ff8800; /* 統一感あるシャドウ */
+    flex-grow: 1;
+    margin-left: 10px;
+}
+
+/* 実績数のスタイル */
+.item-quantity {
+    font-size: 1.7rem;
+    font-weight: bold;
+    color: #ffd700;
+    text-shadow: 0 0 5px #ffaa00, 0 0 10px #ff8800;
+    text-align: center;
+}

@@ -3,6 +3,7 @@ require '../../src/common/Db_connect.php';
 
 session_start();
 
+// 詳細なカラム名と相対パスと処理ロジックはCDNに合わせて調整
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $user_id = $_POST['user_id'] ?? '';
     $password = $_POST['password'] ?? '';
@@ -16,9 +17,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $user = $stmt->fetch(PDO::FETCH_ASSOC);
 
         if ($user && password_verify($password, $user['password'])) {
-            // ログイン成功
             $_SESSION['user_id'] = $user['user_id'];
-            header('Location: dashboard.php'); // ダッシュボードへリダイレクト
+            header('Location: ../G1-1.php'); 
             exit;
         } else {
             $error = 'ユーザ名またはパスワードが正しくありません。';
@@ -38,7 +38,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <link rel="stylesheet" href="G3-1.css">
 </head>
 <body>
-<a href="../G1-1/Top.html">
+<a href="../G1-1/G1-1.html">
   <button class="back-button">戻る</button>
 </a>
 <form method="POST" action="login.php">
