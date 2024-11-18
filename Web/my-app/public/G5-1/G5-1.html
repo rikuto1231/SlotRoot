@@ -12,7 +12,7 @@
     <!-- ランキングタイトル -->
     <div class="header">
         <h1>ランキング</h1>
-        <button class="back-btn" onclick="window.location.href='../G1-1/Top.html'">戻る</button>
+        <button class="back-btn" onclick="window.location.href='../G1-1/G1-1.html'">戻る</button>
     </div>
 
     <!-- PHP出力置き換え予定 -->

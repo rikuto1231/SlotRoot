@@ -1,3 +1,5 @@
+
+/* CSSコード */
 body {
   background-color: #808080;
   }
@@ -23,7 +25,7 @@ body {
   font-size: 10px;
   }
   
-  form input[type = "id"],form input[type = "password"] {
+  form input[type = "text"],form input[type = "password"] {
   border: 0;
   background: none;
   display: block;
@@ -37,7 +39,7 @@ body {
   text-align: center;
   }
   
-  form input[type = "id"]:focus,form input[type = "password"]:focus {
+  form input[type = "text"]:focus,form input[type = "password"]:focus {
   width: 280px;
   background-color: #f0f8ff;
   }

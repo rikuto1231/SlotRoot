@@ -17,29 +17,6 @@
         <button class="back-button" onclick="goBack()">戻る</button>
     </div>
 
-    <style>
-         body {
-        font-family: Arial, sans-serif;
-        margin: 0;
-        padding: 0;
-        background-image: url('./img/loginback1.jpeg'); /* 背景画像のURL */
-        background-size: cover; /* 画像を画面いっぱいに表示 */
-        background-position: center; /* 画像の中心を画面の中心に */
-        background-repeat: no-repeat; /* 画像を繰り返さない */
-    }
-
-    .container {
-        max-width: 400px;
-        margin: 20px auto;
-        padding: 20px;
-        border-radius: 10px;
-    }
-    .back-button:hover {
-    background-color: red;
-    border-color: red;
-}
-    
-    </style>
     <div class="achievement">
         <img src="./img/tuma.png" alt="金の延べ棒">
         <div class="achievement-name">啓祐の金の爪楊枝</div>
@@ -64,9 +41,8 @@
 
 <script>
     function goBack() {
-        window.location.href = "../G1-1/Top.html";
+        window.location.href = "../G1-1/G1-1.html";
     }
 </script>
-<script src="script.js"></script>
 </body>
 </html>
