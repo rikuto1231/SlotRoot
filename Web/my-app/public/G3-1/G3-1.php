@@ -17,9 +17,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $user = $stmt->fetch(PDO::FETCH_ASSOC);
 
         if ($user && password_verify($password, $user['password'])) {
-            // ログイン成功
             $_SESSION['user_id'] = $user['user_id'];
-            header('Location: ../G1-1.php'); // ダッシュボードへリダイレクト
+            header('Location: ../G1-1.php'); 
             exit;
         } else {
             $error = 'ユーザ名またはパスワードが正しくありません。';
