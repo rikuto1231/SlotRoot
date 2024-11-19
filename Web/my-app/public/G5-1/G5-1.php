@@ -3,24 +3,33 @@
 require '../../src/common/Db_connect.php';
 $pdo = getDatabaseConnection();
 
-// ランキングデータ取得
-$sql = "SELECT name, point FROM user ORDER BY point DESC LIMIT 10"; // 上位10名を取得
+// 全体のランキングを取得
+$sql = "SELECT user_id, name, point FROM user ORDER BY point DESC";
 $stmt = $pdo->prepare($sql);
 $stmt->execute();
 $rankings = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-// 自分の順位情報（仮で1）
-$userId = "1"; // セッションや認証から取得する場合は変数を差し替え
-$selfSql = "SELECT COUNT(*)+1 AS rank FROM user WHERE point > (SELECT point FROM user WHERE name = :name)";
-$selfStmt = $pdo->prepare($selfSql);
-$selfStmt->bindParam(':name', $userId, PDO::PARAM_STR);
-$selfStmt->execute();
-$selfRankData = $selfStmt->fetch(PDO::FETCH_ASSOC);
+
+$userId = "1"; // セッションのuser_idに差し替え予定
+
+
+$selfRankSql = "
+    SELECT COUNT(*) + 1 AS rank
+    FROM user
+    WHERE point > (SELECT point FROM user WHERE user_id = :user_id)";
+$selfRankStmt = $pdo->prepare($selfRankSql);
+$selfRankStmt->bindParam(':user_id', $userId, PDO::PARAM_INT);
+$selfRankStmt->execute();
+
+$selfRankData = $selfRankStmt->fetch(PDO::FETCH_ASSOC);
 $selfRank = $selfRankData['rank'] ?? '未登録';
-$selfPointSql = "SELECT point FROM user WHERE name = :name";
+
+// 自分のポイントを取得
+$selfPointSql = "SELECT point FROM user WHERE user_id = :user_id";
 $selfPointStmt = $pdo->prepare($selfPointSql);
-$selfPointStmt->bindParam(':name', $userId, PDO::PARAM_STR);
+$selfPointStmt->bindParam(':user_id', $userId, PDO::PARAM_INT);
 $selfPointStmt->execute();
+
 $selfPointData = $selfPointStmt->fetch(PDO::FETCH_ASSOC);
 $selfPoints = $selfPointData['point'] ?? 0;
 ?>
@@ -35,7 +44,6 @@ $selfPoints = $selfPointData['point'] ?? 0;
 <body>
 
 <div class="container">
-    <!-- ランキングタイトル -->
     <div class="header">
         <h1>ランキング</h1>
         <button class="back-btn" onclick="window.location.href='../G1-1/G1-1.html'">戻る</button>
@@ -55,7 +63,7 @@ $selfPoints = $selfPointData['point'] ?? 0;
     <!-- 自分の順位 -->
     <div class="footer">
         <span class="rank">あなたの順位: <?= $selfRank ?>位</span>
-        <span class="name"><?= htmlspecialchars($userName, ENT_QUOTES, 'UTF-8') ?></span>
+        <span class="name">ユーザーID: <?= htmlspecialchars($userId, ENT_QUOTES, 'UTF-8') ?></span>
         <span class="points"><?= $selfPoints ?>pt</span>
     </div>
 </div>
