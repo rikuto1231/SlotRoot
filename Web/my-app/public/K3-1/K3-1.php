@@ -1,11 +1,10 @@
 <?php
 // DB接続
-require 'build/Db_connect.php';
-$baseUrl = '/build';
+require '../../src/common/Db_connect.php';
+
 
 $pdo = getDatabaseConnection();
 
-// ユーザーポイント取得
 $sql = "SELECT user_id, name, point FROM user ORDER BY point DESC";
 $stmt = $pdo->prepare($sql);
 $stmt->execute();
@@ -45,8 +44,8 @@ $rankings = $stmt->fetchAll(PDO::FETCH_ASSOC);
         echo '<tr>';
         echo '<td>' . ($index + 1) . '</td>';
         echo '<td>';
-        // ユーザー名をクリックするとPOSTでuser_idをセッションに保存
-        echo '<form method="POST" action="set_user_session.php" style="display:inline;">';
+        // ID送信POST判別個別特定
+        echo '<form method="POST" action="../K3-3/K3-3.php" style="display:inline;">';
         echo '<input type="hidden" name="user_id" value="' . htmlspecialchars($ranking['user_id']) . '">';
         echo '<button type="submit" style="border:none; background:none; color:blue; text-decoration:underline; cursor:pointer;">';
         echo htmlspecialchars($ranking['name']);
