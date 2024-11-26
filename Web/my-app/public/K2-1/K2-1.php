@@ -61,7 +61,9 @@
     </style>
 </head>
 <body>
-    <a href="#" class="back-button">戻る</a>
+<a href="../K1-1/K1-1.html">
+  <button class="back-button">戻る</button>
+</a>
     <div class="container">
         <!-- 修正: K3-2/K3-2.phpへのリンク -->
         <a href="../K3-2/K3-2.php" class="button">ユーザー情報</a>
