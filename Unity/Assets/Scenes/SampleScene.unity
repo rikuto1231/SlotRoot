@@ -846,7 +846,7 @@ MonoBehaviour:
   m_ScaleFactor: 1
   m_ReferenceResolution: {x: 1920, y: 1080}
   m_ScreenMatchMode: 0
-  m_MatchWidthOrHeight: 0
+  m_MatchWidthOrHeight: 0.837
   m_PhysicalUnit: 3
   m_FallbackScreenDPI: 96
   m_DefaultSpriteDPI: 96
@@ -1165,7 +1165,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 0.92832315, b: 0.91194963, a: 0.96862745}
+  m_Color: {r: 0.8679245, g: 0.8455937, b: 0.84063125, a: 0.96862745}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -1241,8 +1241,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0}
   m_AnchorMax: {x: 0.5, y: 1}
-  m_AnchoredPosition: {x: -3.7921271, y: -15.02063}
-  m_SizeDelta: {x: 480.55, y: 129.12}
+  m_AnchoredPosition: {x: 8.3387, y: -4.6227417}
+  m_SizeDelta: {x: 444.1574, y: -200.9713}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &943918324
 MonoBehaviour:
@@ -1342,7 +1342,7 @@ MonoBehaviour:
     battleVideo: {fileID: 32900000, guid: ab864c55380c4b74482afd53454db4aa, type: 3}
     victoryVideo: {fileID: 32900000, guid: b342126922297ee4da64283c553556aa, type: 3}
     defeatVideo: {fileID: 32900000, guid: cfe0057c3c5d2ec42a1631362621d7cd, type: 3}
-    hitProbability: 0
+    hitProbability: 0.351
     victoryAudioClip: {fileID: 0}
     defeatAudioClip: {fileID: 0}
     allowsReplay: 0

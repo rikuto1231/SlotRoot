@@ -1,4 +1,3 @@
-<!-- ゲスト対応が分からないのでとりあえずセッション別型で維持 -->
 <?php
 session_start();
 $user = isset($_SESSION['user']) ? $_SESSION['user'] : 'ゲスト';
@@ -31,7 +30,6 @@ $trophy = isset($_SESSION['trophy']) ? $_SESSION['trophy'] : 0;
             
             <script>
                 function handleTrophyClick() {
-                    // G6-1フォルダのach.htmlに遷移
                     window.location.href = "../G6-1/G6-1.html";
                 }
             </script>
