@@ -10,7 +10,7 @@ public class VideoPlaybackController : MonoBehaviour
     public event VideoEndHandler OnSpecialVideoEnded;
 
     [SerializeField] private VideoPlayer videoPlayer;
-    [SerializeField] private string defaultVideoPath = "default.mp4";
+    [SerializeField] private string defaultVideoPath = "murakami_default.mov";
     
     public bool IsVictoryVideoPlaying { get; private set; }
 

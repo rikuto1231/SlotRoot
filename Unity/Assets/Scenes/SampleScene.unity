@@ -158,7 +158,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.929, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -36, y: 439}
+  m_AnchoredPosition: {x: -28, y: 434}
   m_SizeDelta: {x: 51.343, y: 870.1053}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &5106927
@@ -699,7 +699,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   videoPlayer: {fileID: 450733332}
-  defaultVideoPath: default.mp4
+  defaultVideoPath: murakami_default.mov
 --- !u!1 &519420028
 GameObject:
   m_ObjectHideFlags: 0
@@ -1332,14 +1332,14 @@ MonoBehaviour:
   outerFrameEffect: {fileID: 936791223}
   spacePressSound: {fileID: 8300000, guid: bbe864d9b9cdfdf4f9e02d973423cd85, type: 3}
   spriteEffects:
-  - sprite: {fileID: 21300000, guid: 1d59c838c7dab7a42ab8a3a078021a95, type: 3}
+  - sprite: {fileID: 21300000, guid: 79c79c38309b6704f874e8ebdc98c843, type: 3}
     specialAudioClip: {fileID: 8300000, guid: 543b266e6fa5c4c42bcf6956874c1518, type: 3}
-    specialVideoPath: Maezono_FreeHit.mp4
+    specialVideoPath: tuda_special.mov
     pointsForSprite: 1000
     isBonusSprite: 1
-    battleVideoPath: sample_hit.mp4
-    victoryVideoPath: Tuda_movieHit.mp4
-    defeatVideoPath: Tuda_movieHit.mp4
+    battleVideoPath: tuda_battle5.mov
+    victoryVideoPath: tuda_victory.mov
+    defeatVideoPath: tuda_lose.mov
     hitProbability: 0.174
     victoryAudioClip: {fileID: 8300000, guid: 813e9ce93137ea649af4d0927a6611ac, type: 3}
     defeatAudioClip: {fileID: 8300000, guid: 7b26d91e94d3c1b4481a53a845c66c6d, type: 3}
@@ -2050,7 +2050,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0.11000001, y: 1}
-  m_AnchoredPosition: {x: -0, y: 439}
+  m_AnchoredPosition: {x: -23, y: 434}
   m_SizeDelta: {x: -29.9451, y: 870.1053}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1623325467
