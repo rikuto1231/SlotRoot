@@ -7,7 +7,7 @@
     <link rel="stylesheet" href="G6-1.css"> <!-- 外部CSSファイル -->
 </head>
 <body>
-    <a href="../G1-1/G1-1.html" class="back-button">戻る</a>
+    <a href="../G1-1/G1-1.php" class="back-button">戻る</a>
     
     <div class="container">
         <div class="items-wrapper">

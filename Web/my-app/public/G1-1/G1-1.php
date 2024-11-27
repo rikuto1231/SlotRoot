@@ -30,7 +30,7 @@ $trophy = isset($_SESSION['trophy']) ? $_SESSION['trophy'] : 0;
             
             <script>
                 function handleTrophyClick() {
-                    window.location.href = "../G6-1/G6-1.html";
+                    window.location.href = "../G6-1/G6-1.php";
                 }
             </script>
         </div>
@@ -38,10 +38,10 @@ $trophy = isset($_SESSION['trophy']) ? $_SESSION['trophy'] : 0;
         <h1>麻生無双</h1>
 
         <div class="login-buttons">
-            <a href="../G2-1/new.html">
+            <a href="../G2-1/G2-1.php">
                 <button>新規登録</button>   
             </a>
-            <a href="../G3-1/login.html">
+            <a href="../G3-1/G3-1.php">
                 <button>ログイン/ログアウト</button>
             </a>
 
@@ -50,9 +50,9 @@ $trophy = isset($_SESSION['trophy']) ? $_SESSION['trophy'] : 0;
 
     <section class="main-buttons">
         <button class="play-button">プレイ</button>
-            <a href="../G4-1/G4-1.html">
+            <a href="../G4-1/G4-1.php">
                 <button class="exchange-button">交換</button>
-            <a href="../G5-1/G5-1.html">
+            <a href="../G5-1/G5-1.php">
                 <button class="ranking-button">ランキング</button>
             </a>
     </section>

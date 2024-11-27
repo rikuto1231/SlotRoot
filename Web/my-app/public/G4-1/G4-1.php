@@ -41,7 +41,7 @@
 
 <script>
     function goBack() {
-        window.location.href = "../G1-1/G1-1.html";
+        window.location.href = "../G1-1/G1-1.php";
     }
 </script>
 </body>

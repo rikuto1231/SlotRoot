@@ -1,34 +1,3 @@
-<?php
-require '../../src/common/Db_connect.php';
-
-session_start();
-
-// 詳細なカラム名と相対パスと処理ロジックはCDNに合わせて調整
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $user_id = $_POST['user_id'] ?? '';
-    $password = $_POST['password'] ?? '';
-
-    if (!empty($user_id) && !empty($password)) {
-        $pdo = getDatabaseConnection();
-        $sql = "SELECT user_id, password FROM user WHERE user_id = :user_id";
-        $stmt = $pdo->prepare($sql);
-        $stmt->bindParam(':user_id', $user_id, PDO::PARAM_STR);
-        $stmt->execute();
-        $user = $stmt->fetch(PDO::FETCH_ASSOC);
-
-        if ($user && password_verify($password, $user['password'])) {
-            $_SESSION['user_id'] = $user['user_id'];
-            header('Location: ../G1-1.php'); 
-            exit;
-        } else {
-            $error = 'ユーザ名またはパスワードが正しくありません。';
-        }
-    } else {
-        $error = 'ユーザ名とパスワードを入力してください。';
-    }
-}
-?>
-
 <!DOCTYPE html>
 <html lang="ja">
 <head>
@@ -38,22 +7,53 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <link rel="stylesheet" href="G3-1.css">
 </head>
 <body>
-<a href="../G1-1/G1-1.html">
-  <button class="back-button">戻る</button>
+<a href="../G1-1/G1-1.php">
+<button class="back-button">戻る</button>
 </a>
-<form method="POST" action="login.php">
+<form id="loginForm">
     <div class="login_form_top">
-      <h1>ログイン</h1>
-      <p>ユーザ名、パスワードをご入力の上、「ログイン」ボタンをクリックしてください。</p>
+    <h1>ログイン</h1>
+    <p>ユーザ名、パスワードをご入力の上、「ログイン」ボタンをクリックしてください。</p>
+    <div id="errorMessage" style="color:red;"></div>
     </div>
     <div class="login_form_btm">
-      <input type="text" name="user_id" placeholder="ユーザ名" required>
-      <input type="password" name="password" placeholder="パスワード" required>
-      <input type="submit" value="ログイン">
+    <input type="text" name="user_name" placeholder="ユーザ名" required>
+    <input type="password" name="password" placeholder="パスワード" required>
+    <input type="submit" value="ログイン">
     </div>
-    <?php if (!empty($error)): ?>
-        <p style="color:red;"><?= htmlspecialchars($error) ?></p>
-    <?php endif; ?>
 </form>
+
+<script>
+document.getElementById('loginForm').addEventListener('submit', function(e) {
+    e.preventDefault();
+    
+    document.getElementById('errorMessage').textContent = '';
+    
+    const formData = new FormData(this);
+    
+    fetch('login_process.php', {
+        method: 'POST',
+        body: formData
+    })
+    .then(response => {
+        const contentType = response.headers.get('content-type');
+        if (!contentType || !contentType.includes('application/json')) {
+            throw new TypeError('JSONレスポンスではありません');
+        }
+        return response.json();
+    })
+    .then(data => {
+        if (data.success) {
+            window.location.href = '../G1-1/G1-1.php';
+        } else {
+            document.getElementById('errorMessage').textContent = data.message;
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        document.getElementById('errorMessage').textContent = 'ログイン処理中にエラーが発生しました。';
+    });
+});
+</script>
 </body>
 </html>

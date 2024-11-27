@@ -1,38 +1,3 @@
-<?php
-// DB接続
-require '../../src/common/Db_connect.php';
-$pdo = getDatabaseConnection();
-
-// 全体のランキングを取得
-$sql = "SELECT user_id, name, point FROM user ORDER BY point DESC";
-$stmt = $pdo->prepare($sql);
-$stmt->execute();
-$rankings = $stmt->fetchAll(PDO::FETCH_ASSOC);
-
-
-$userId = "1"; // セッションのuser_idに差し替え予定
-
-
-$selfRankSql = "
-    SELECT COUNT(*) + 1 AS rank
-    FROM user
-    WHERE point > (SELECT point FROM user WHERE user_id = :user_id)";
-$selfRankStmt = $pdo->prepare($selfRankSql);
-$selfRankStmt->bindParam(':user_id', $userId, PDO::PARAM_INT);
-$selfRankStmt->execute();
-
-$selfRankData = $selfRankStmt->fetch(PDO::FETCH_ASSOC);
-$selfRank = $selfRankData['rank'] ?? '未登録';
-
-// 自分のポイントを取得
-$selfPointSql = "SELECT point FROM user WHERE user_id = :user_id";
-$selfPointStmt = $pdo->prepare($selfPointSql);
-$selfPointStmt->bindParam(':user_id', $userId, PDO::PARAM_INT);
-$selfPointStmt->execute();
-
-$selfPointData = $selfPointStmt->fetch(PDO::FETCH_ASSOC);
-$selfPoints = $selfPointData['point'] ?? 0;
-?>
 <!DOCTYPE html>
 <html lang="ja">
 <head>
@@ -42,31 +7,88 @@ $selfPoints = $selfPointData['point'] ?? 0;
     <link rel="stylesheet" href="./G5-1.css">
 </head>
 <body>
-
 <div class="container">
     <div class="header">
         <h1>ランキング</h1>
-        <button class="back-btn" onclick="window.location.href='../G1-1/G1-1.html'">戻る</button>
+        <button class="back-btn" onclick="window.location.href='../G1-1/G1-1.php'">戻る</button>
     </div>
 
-    <!-- ランキング出力 -->
-    <div class="ranking-list">
-        <?php foreach ($rankings as $index => $ranking): ?>
-        <div class="achievement">
-            <span class="rank"><?= ($index + 1) ?>位</span>
-            <span class="name"><?= htmlspecialchars($ranking['name'], ENT_QUOTES, 'UTF-8') ?></span>
-            <span class="points"><?= $ranking['point'] ?>pt</span>
-        </div>
-        <?php endforeach; ?>
+    <div class="ranking-list" id="rankingList">
+        <!-- js動的生成位置 -->
     </div>
     
-    <!-- 自分の順位 -->
-    <div class="footer">
-        <span class="rank">あなたの順位: <?= $selfRank ?>位</span>
-        <span class="name">ユーザーID: <?= htmlspecialchars($userId, ENT_QUOTES, 'UTF-8') ?></span>
-        <span class="points"><?= $selfPoints ?>pt</span>
+    <div class="footer" id="userRankInfo">
+        <span class="rank">あなたの順位: ロード中</span>
+        <span class="name">ユーザー名: ロード中</span>
+        <span class="points">0pt</span>
     </div>
 </div>
 
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const rankingList = document.getElementById('rankingList');
+    const userRankInfo = document.getElementById('userRankInfo');
+
+    fetch('ranking_process.php', {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json'
+        }
+    })
+    .then(response => {
+        const contentType = response.headers.get('content-type');
+        if (!contentType || !contentType.includes('application/json')) {
+            throw new TypeError('JSONレスポンスではありません');
+        }
+        return response.json();
+    })
+    .then(data => {
+        if (data.success) {
+            
+            rankingList.innerHTML = data.rankings.map((ranking, index) => `
+                <div class="achievement">
+                    <span class="rank">${index + 1}位</span>
+                    <span class="name">${escapeHtml(ranking.name)}</span>
+                    <span class="points">${ranking.total_point}pt</span>
+                </div>
+            `).join('');
+
+            // name取得用に取得元jsonプロパティ追加予定
+            console.log(data);
+            userRankInfo.innerHTML = `
+                <span class="rank">あなたの順位: ${data.user_rank.rank}位</span>
+                <span class="name">${data.user_rank.rank === 'ゲストモード' ? 'ゲスト' : data.user_rank.name}</span>
+                <span class="points">${data.user_rank.total_point}pt（ユーザーポイント: ${data.user_rank.user_point}pt / トロフィーポイント: ${data.user_rank.trophy_point}pt）</span>
+            `;
+        } else {
+            rankingList.innerHTML = `<div class="achievement">ランキング情報を取得できませんでした。</div>`;
+            userRankInfo.innerHTML = `
+                <span class="rank">順位: 取得エラー</span>
+                <span class="name">エラーが発生しました</span>
+                <span class="points">0pt</span>
+            `;
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        rankingList.innerHTML = `<div class="achievement">ランキング情報の読み込みに失敗しました。</div>`;
+        userRankInfo.innerHTML = `
+            <span class="rank">順位: 読み込みエラー</span>
+            <span class="name">通信エラーが発生しました</span>
+            <span class="points">0pt</span>
+        `;
+    });
+
+    // XSS対策
+    function escapeHtml(unsafe) {
+        return unsafe
+            .replace(/&/g, "&amp;")
+            .replace(/</g, "&lt;")
+            .replace(/>/g, "&gt;")
+            .replace(/"/g, "&quot;")
+            .replace(/'/g, "&#039;");
+    }
+});
+</script>
 </body>
 </html>

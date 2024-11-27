@@ -1,9 +1,14 @@
 <?php
+
+error_reporting(0);
+
+function sendJsonResponse($data) {
+    header('Content-Type: application/json; charset=utf-8');
+    echo json_encode($data);
+    exit;
+}
+
 require '../../src/common/Db_connect.php';
-
-
-header('Content-Type: application/json');
-
 class UserRegistration {
     private $pdo;
     
@@ -12,32 +17,50 @@ class UserRegistration {
     }
     
     public function registerUser($name, $password) {
+        if (empty($name) || empty($password)) {
+            return [
+                'success' => false,
+                'message' => '名前とパスワードを入力してください。'
+            ];
+        }
+        
         try {
-            // 入力値の検証
-            if (empty($name) || empty($password)) {
-                throw new Exception('すべての項目を入力してください。');
+            if (strlen($name) > 50) {
+                return [
+                    'success' => false,
+                    'message' => 'ユーザー名は50文字以内で入力してください。'
+                ];
             }
             
-            $stmt = $this->pdo->prepare('SELECT COUNT(*) FROM users WHERE name = ?');
+            $stmt = $this->pdo->prepare('SELECT COUNT(*) FROM user WHERE name = ?');
             $stmt->execute([$name]);
             if ($stmt->fetchColumn() > 0) {
-                throw new Exception('このユーザー名は既に使用されています。');
+                return [
+                    'success' => false,
+                    'message' => 'このユーザー名は既に使用されています。'
+                ];
             }
             
+            if (strlen($password) < 8) {
+                return [
+                    'success' => false,
+                    'message' => 'パスワードは8文字以上で入力してください。'
+                ];
+            }
             
             $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
             
             $currentTime = date('Y-m-d H:i:s');
             
             $stmt = $this->pdo->prepare(
-                'INSERT INTO users (name, pass, point, create_at, update_at) 
-                VALUES (?, ?, ?, ?, ?)'
+                'INSERT INTO user (name, pass, point, create_at, update_at) 
+                 VALUES (?, ?, ?, ?, ?)'
             );
             
             $result = $stmt->execute([
                 $name,
                 $hashedPassword,
-                0, // 初期ポイント
+                500,
                 $currentTime,
                 $currentTime
             ]);
@@ -48,35 +71,50 @@ class UserRegistration {
                     'message' => '登録が完了しました'
                 ];
             } else {
-                throw new Exception('登録に失敗しました。');
+                return [
+                    'success' => false,
+                    'message' => '登録に失敗しました。'
+                ];
             }
             
+        } catch (PDOException $e) {
+            return [
+                'success' => false,
+                'message' => 'データベースエラーが発生しました。' . $e->getMessage()
+            ];
         } catch (Exception $e) {
             return [
                 'success' => false,
-                'message' => $e->getMessage()
+                'message' => '予期せぬエラーが発生しました。' . $e->getMessage()
             ];
         }
     }
 }
 
-// POSTリクエストの処理
+
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     try {
         $pdo = getDatabaseConnection();
+        
         $registration = new UserRegistration($pdo);
         
         $name = filter_input(INPUT_POST, 'name', FILTER_SANITIZE_STRING);
         $password = $_POST['password'];
         
         $result = $registration->registerUser($name, $password);
-        echo json_encode($result);
+        
+        sendJsonResponse($result);
         
     } catch (Exception $e) {
-        echo json_encode([
+        sendJsonResponse([
             'success' => false,
-            'message' => $e->getMessage()
+            'message' => '処理中にエラーが発生しました。' . $e->getMessage()
         ]);
     }
+} else {
+    sendJsonResponse([
+        'success' => false,
+        'message' => '不正なリクエストです。'
+    ]);
 }
 ?>
