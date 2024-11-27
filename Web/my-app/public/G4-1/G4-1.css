@@ -2,104 +2,202 @@ body {
     font-family: Arial, sans-serif;
     margin: 0;
     padding: 0;
-    background-image: url('./img/loginback1.jpeg'); /* 背景画像 */
-    background-size: cover;
-    background-position: center;
+    background: url('./img/loginback1.jpeg') center center/cover no-repeat fixed;
+    min-height: 100vh;
 }
 
-
 .container {
-    max-width: 90%;
-    margin: 5% auto;
-    padding: 2%;
-    background-color: rgba(0, 0, 0, 0.85); /* 濃いめの半透明背景 */
-    border-radius: 15px;
-    box-shadow: 0 0 10px rgba(255, 223, 0, 0.8); /* ネオン風影を控えめに */
+    width: 95%;
+    max-width: 1400px;
+    margin: 20px auto;
+    padding: 20px;
+    background: rgba(0, 0, 0, 0.85);
+    border-radius: 20px;
+    box-shadow: 0 0 30px rgba(255, 215, 0, 0.3);
+    border: 1px solid rgba(255, 215, 0, 0.3);
+    backdrop-filter: blur(10px);
+    height: 90vh;
+    display: flex;
+    flex-direction: column;
 }
 
 .header {
+    position: sticky;
+    top: 0;
     display: flex;
     justify-content: space-between;
     align-items: center;
+    padding: 15px 20px;
+    background: rgba(0, 0, 0, 0.95);
+    border-bottom: 2px solid rgba(255, 215, 0, 0.3);
+    border-radius: 15px;
     margin-bottom: 20px;
+    z-index: 100;
 }
 
-#points {
-    color: #ffd700; /* 濃い黄色 */
-    font-size: 3rem; /* フォントサイズ大 */
-    font-weight: bold;
-    text-shadow: 0 0 5px #ffaa00, 0 0 10px #ff8800; /* シャドウを小さく */
+.points {
+    display: flex;
+    align-items: center;
+    padding: 10px 20px;
+    background: linear-gradient(145deg, rgba(0, 0, 0, 0.7), rgba(42, 42, 42, 0.7));
+    border: 2px solid #ffd700;
+    border-radius: 15px;
+    box-shadow: 0 0 20px rgba(255, 215, 0, 0.2);
 }
 
 .points img {
-    width: 50px;
-    height: 50px;
-    margin-right: 10px;
+    width: 40px;
+    height: 40px;
+    margin-right: 15px;
+    filter: drop-shadow(0 0 5px rgba(255, 215, 0, 0.5));
+}
+
+#points {
+    color: #ffd700;
+    font-size: 2.5rem;
+    font-weight: bold;
+    text-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
+    letter-spacing: 2px;
 }
 
 .back-button {
-    background-color: transparent;
+    background: linear-gradient(145deg, rgba(42, 42, 42, 0.8), rgba(0, 0, 0, 0.8));
     border: 2px solid #ffd700;
     color: #ffd700;
-    padding: 10px 20px;
+    padding: 12px 30px;
     border-radius: 25px;
-    text-shadow: 0 0 3px #ffaa00, 0 0 7px #ff8800; /* 強調しすぎない */
+    font-size: 1.1rem;
     cursor: pointer;
-    transition: 0.25s;
+    transition: all 0.3s ease;
+    text-shadow: 0 0 5px rgba(255, 215, 0, 0.5);
+    box-shadow: 0 0 15px rgba(255, 215, 0, 0.2);
 }
 
 .back-button:hover {
-    background-color: rgba(255, 223, 0, 0.2);
+    transform: translateY(-2px);
+    box-shadow: 0 0 20px rgba(255, 215, 0, 0.4);
+    background: linear-gradient(145deg, rgba(0, 0, 0, 0.8), rgba(42, 42, 42, 0.8));
+}
+
+#trophies-container {
+    flex-grow: 1;
+    overflow-y: auto;
+    padding: 10px;
+    /* スクロールバーのスタイリング */
+    scrollbar-width: thin;
+    scrollbar-color: #ffd700 rgba(0, 0, 0, 0.3);
+}
+
+/* Webkit（Chrome, Safari）用のスクロールバースタイル */
+#trophies-container::-webkit-scrollbar {
+    width: 8px;
+}
+
+#trophies-container::-webkit-scrollbar-track {
+    background: rgba(0, 0, 0, 0.3);
+    border-radius: 4px;
+}
+
+#trophies-container::-webkit-scrollbar-thumb {
+    background: #ffd700;
+    border-radius: 4px;
 }
 
 .achievement {
-    display: flex;
-    justify-content: space-between;
+    display: grid;
+    grid-template-columns: auto 1fr auto auto;
     align-items: center;
-    padding: 2%;
-    margin-bottom: 20px;
-    background-color: rgba(0, 0, 0, 0.9); /* 少し濃い背景 */
-    border-radius: 10px;
+    gap: 20px;
+    padding: 25px;
+    background: linear-gradient(145deg, rgba(0, 0, 0, 0.9), rgba(42, 42, 42, 0.9));
     border: 2px solid #ffd700;
-    box-shadow: 0 0 5px #ffaa00, 0 0 10px #ff8800; /* シャドウを小さく控えめに */
+    border-radius: 15px;
+    margin-bottom: 20px;
+    transition: all 0.3s ease;
+    box-shadow: 0 0 15px rgba(255, 215, 0, 0.2);
+    width: 95%;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.achievement:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 0 25px rgba(255, 215, 0, 0.3);
 }
 
 .achievement img {
-    width: 15%;
-    max-width: 60px;
+    width: 80px;
+    height: 80px;
+    object-fit: contain;
+    filter: drop-shadow(0 0 5px rgba(255, 215, 0, 0.3));
 }
 
 .achievement-name {
-    font-size: 1.2rem;
     color: #ffd700;
-    text-shadow: 0 0 5px #ffaa00, 0 0 10px #ff8800; /* シャドウを抑えた */
-    flex-grow: 1;
-    margin-left: 10px;
+    font-size: 1.4rem;
+    text-shadow: 0 0 5px rgba(255, 215, 0, 0.5);
+    padding-right: 15px;
 }
 
 .points-text {
+    color: #ffd700;
     font-size: 1.8rem;
     font-weight: bold;
-    color: #ffd700;
-    text-shadow: 0 0 5px #ffaa00, 0 0 10px #ff8800;
-    text-align: center;
-    padding: 15px;
+    text-shadow: 0 0 5px rgba(255, 215, 0, 0.5);
+    text-align: right;
+    min-width: 120px;
 }
 
 .exchange-btn {
-    font-size: 1rem;
-    padding: 5px 15px;
-    background-color: black;
+    padding: 12px 30px;
+    background: linear-gradient(145deg, rgba(42, 42, 42, 0.8), rgba(0, 0, 0, 0.8));
     border: 2px solid #ffd700;
     color: #ffd700;
-    border-radius: 10px;
+    border-radius: 12px;
+    font-size: 1.2rem;
     cursor: pointer;
-    text-shadow: 0 0 5px #ffaa00, 0 0 10px #ff8800; /* 控えめなネオン効果 */
-    transition: 0.3s;
-    width:14%;
-    height:100%;
+    transition: all 0.3s ease;
+    min-width: 100px;
+    text-shadow: 0 0 5px rgba(255, 215, 0, 0.5);
 }
 
 .exchange-btn:hover {
-    background-color: rgba(255, 223, 0, 0.2);
+    background: linear-gradient(145deg, rgba(0, 0, 0, 0.8), rgba(42, 42, 42, 0.8));
+    box-shadow: 0 0 15px rgba(255, 215, 0, 0.4);
+    transform: translateY(-2px);
+}
+
+@media (max-width: 768px) {
+    .container {
+        width: 98%;
+        padding: 10px;
+        margin: 10px auto;
+    }
+
+    .achievement {
+        grid-template-columns: 1fr;
+        text-align: center;
+        gap: 15px;
+        padding: 20px;
+    }
+
+    .achievement img {
+        width: 60px;
+        height: 60px;
+        margin: 0 auto;
+    }
+
+    .points-text {
+        text-align: center;
+    }
+
+    .exchange-btn {
+        width: 100%;
+        max-width: 200px;
+        margin: 0 auto;
+    }
+
+    #points {
+        font-size: 2rem;
+    }
 }

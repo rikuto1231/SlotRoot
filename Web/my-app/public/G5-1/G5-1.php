@@ -53,7 +53,6 @@ document.addEventListener('DOMContentLoaded', function() {
                 </div>
             `).join('');
 
-            // name取得用に取得元jsonプロパティ追加予定
             console.log(data);
             userRankInfo.innerHTML = `
                 <span class="rank">あなたの順位: ${data.user_rank.rank}位</span>

@@ -7,7 +7,6 @@
     <link rel="stylesheet" href="./G4-1.css">
 </head>
 <body>
-
 <div class="container">
     <div class="header">
         <div class="points">
@@ -16,33 +15,59 @@
         </div>
         <button class="back-button" onclick="goBack()">戻る</button>
     </div>
-
-    <div class="achievement">
-        <img src="./img/tuma.png" alt="金の延べ棒">
-        <div class="achievement-name">啓祐の金の爪楊枝</div>
-        <div class="points-text">100000pt</div>
-        <button class="exchange-btn" onclick="exchangePoints(1000)">交換</button>
-    </div>
-
-    <div class="achievement">
-        <img src="./img/tuda.png" alt="金の延べ棒">
-        <div class="achievement-name">村上神拳の使い手</div>
-        <div class="points-text">10000pt</div>
-        <button class="exchange-btn" onclick="exchangePoints(1000)">交換</button>
-    </div>
-
-    <div class="achievement">
-        <img src="./img/mae.png" alt="金の延べ棒">
-        <div class="achievement-name">津田のペット前園</div>
-        <div class="points-text">1000pt</div>
-        <button class="exchange-btn" onclick="exchangePoints(1000)">交換</button>
+    <div id="trophies-container">
     </div>
 </div>
-
 <script>
     function goBack() {
         window.location.href = "../G1-1/G1-1.php";
     }
+
+    async function fetchUserPoints() {
+        const response = await fetch('./get_user_points.php');
+        const data = await response.json();
+        document.getElementById('points').textContent = data.points;
+    }
+
+    async function fetchTrophies() {
+        const response = await fetch('./get_trophies.php');
+        const trophies = await response.json();
+
+        const container = document.getElementById('trophies-container');
+        container.innerHTML = '';
+
+        trophies.forEach(trophy => {
+            const trophyDiv = document.createElement('div');
+            trophyDiv.className = 'achievement';
+            trophyDiv.innerHTML = `
+                <img src="./img/${trophy.image}" alt="${trophy.name}">
+                <div class="achievement-name">${trophy.name}</div>
+                <div class="points-text">${trophy.point}pt</div>
+                <button class="exchange-btn" onclick="exchangePoints(${trophy.id})">交換</button>
+            `;
+            container.appendChild(trophyDiv);
+        });
+    }
+
+    async function exchangePoints(trophyId) {
+        const response = await fetch('./exchange_trophy.php', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ trophyId: trophyId })
+        });
+        const result = await response.json();
+        if (result.success) {
+            alert('交換が完了しました!');
+            fetchUserPoints();
+        } else {
+            alert(result.message || '交換に失敗しました。');
+        }
+    }
+
+    window.onload = function () {
+        fetchUserPoints();
+        fetchTrophies();
+    };
 </script>
 </body>
 </html>
