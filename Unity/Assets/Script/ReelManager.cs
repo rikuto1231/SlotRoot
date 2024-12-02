@@ -28,11 +28,13 @@ public class ReelManager : MonoBehaviour
         InitializeGame();
     }
 
-    private void InitializeGame()
-    {
-        playerPoints = 500;
+private void InitializeGame()
+{
+    ApiManager.GetUserPoints(this, UserSession.UserId, points => {
+        playerPoints = points;
         UpdatePointDisplay();
-    }
+    });
+}
 
     private void Update()
     {
@@ -243,11 +245,12 @@ public class ReelManager : MonoBehaviour
         }
     }
 
-    private void AddPoints(int amount)
-    {
-        playerPoints += amount;
-        UpdatePointDisplay();
-    }
+private void AddPoints(int amount)
+{
+    playerPoints += amount;
+    UpdatePointDisplay();
+    ApiManager.SaveUserPoints(this, UserSession.UserId, playerPoints);
+}
 
     private void UpdatePointDisplay()
     {

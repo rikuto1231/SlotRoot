@@ -29,6 +29,8 @@ public class VideoPlaybackController : MonoBehaviour
         videoPlayer.source = VideoSource.Url;
         videoPlayer.isLooping = true;
         videoPlayer.SetDirectAudioMute(0, true);
+        videoPlayer.skipOnDrop = true;  // この1行だけ追加
+
         
         string fullPath = System.IO.Path.Combine(Application.streamingAssetsPath, defaultVideoPath);
         videoPlayer.url = fullPath;
