@@ -27,6 +27,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['user_id'])) {
     // 不正なアクセスの場合
     $name = "不正なアクセスです";
     $points = 0;
+    $user_id = null; // 不正アクセス時に送るデータがない場合
 }
 ?>
 <!DOCTYPE html>
@@ -43,7 +44,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['user_id'])) {
         <p><strong>名前:</strong> <?= htmlspecialchars($name, ENT_QUOTES, 'UTF-8') ?></p>
         <p><strong>ポイント:</strong> <?= htmlspecialchars($points, ENT_QUOTES, 'UTF-8') ?>pt</p>
         <div class="button">
-            <button onclick="location.href='../K3-4/K3-4.php'">編集</button>
+            <!-- 編集画面にuser_idをGETパラメータで送信 -->
+            <?php if ($user_id !== null): ?>
+                <button onclick="location.href='../K3-4/K3-4.php?user_id=<?= htmlspecialchars($user_id, ENT_QUOTES, 'UTF-8') ?>'">編集</button>
+            <?php endif; ?>
             <button onclick="location.href='../K3-2/K3-2.php'">戻る</button>
         </div>
     </div>
