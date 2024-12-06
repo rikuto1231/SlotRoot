@@ -33,7 +33,7 @@
     </header>
 
     <section class="main-buttons">
-        <a href="../Game/index.html">
+        <a href="../Game/index.php">
             <button class="play-button">プレイ</button>
         </a>
         <a href="../G4-1/G4-1.php">

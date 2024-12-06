@@ -1,4 +1,5 @@
-// UserSession.cs
+using UnityEngine;
+
 public static class UserSession
 {
     private const int DEFAULT_USER_ID = 1;
