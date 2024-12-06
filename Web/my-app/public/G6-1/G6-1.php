@@ -35,7 +35,7 @@
                         achievementsList.innerHTML = data.trophies.map(trophy => `
                             <div class="item">
                                 <div class="item-name">
-                                    <img src="./img/${trophy.image}" alt="${trophy.name}">
+                                    <img src="../G4-1/img/${trophy.image}" alt="${trophy.name}">
                                     <span>${escapeHtml(trophy.trophy_name)}</span>
                                 </div>
                                 <div class="item-quantity">×${String(trophy.quantity).padStart(3, '0')}</div>
