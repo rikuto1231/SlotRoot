@@ -31,7 +31,7 @@ document.getElementById('loginForm').addEventListener('submit', function(e) {
     
     const formData = new FormData(this);
     
-    fetch('login_process.php', {
+    fetch('./login_process.php', {
         method: 'POST',
         body: formData
     })

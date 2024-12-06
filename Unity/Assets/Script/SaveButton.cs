@@ -1,31 +1,34 @@
 using UnityEngine;
-using UnityEngine.UI; // Buttonコンポーネント用
+using UnityEngine.UI;
 
-public class QuitButton : MonoBehaviour
+public class SaveButton : MonoBehaviour
 {
-    [SerializeField] private Button quitButton; // UIの終了ボタン
-    [SerializeField] private ReelManager reelManager; // ReelManagerスクリプトへの参照（ポイントリセット用）
+    [SerializeField] private Button saveButton;  // 変数名を修正
+    [SerializeField] private ReelManager reelManager;
 
-private void Start()
-{
-    if (quitButton != null)
+    private void Start()
     {
-        // 既存のリスナーをクリア
-        quitButton.onClick.RemoveAllListeners();
-        
-        // 新しいリスナーを追加
-        quitButton.onClick.AddListener(OnQuitButtonPressed);
+        if (saveButton != null)  // 変数名を修正
+        {
+            saveButton.onClick.RemoveAllListeners();
+            saveButton.onClick.AddListener(OnSaveButtonPressed);
+        }
+        else
+        {
+            Debug.LogError("Save Button is not assigned!");  // エラーログを追加
+        }
     }
-}
 
-
-    // 終了ボタンが押されたときに呼び出されるメソッド
-    private void OnQuitButtonPressed()
+    private void OnSaveButtonPressed()
     {
-        Debug.Log("終了ボタンが押されました。ポイントをリセットします。");
+        Debug.Log("Save button pressed. Saving current points.");
         if (reelManager != null)
         {
-            reelManager.ResetPoints(); // ReelManagerのポイントリセットメソッドを呼び出す
+            reelManager.SaveCurrentPoints();
+        }
+        else
+        {
+            Debug.LogError("ReelManager is not assigned to SaveButton!");
         }
     }
 }

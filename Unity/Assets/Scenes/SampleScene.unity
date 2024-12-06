@@ -264,7 +264,7 @@ SpriteRenderer:
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
-  m_Size: {x: 3.36, y: 1.92}
+  m_Size: {x: 6, y: 4.94}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
@@ -399,7 +399,7 @@ MonoBehaviour:
   - {fileID: 21300000, guid: 5153ddb5355f2bc448a67bf03bef804b, type: 3}
   - {fileID: 21300000, guid: 79c79c38309b6704f874e8ebdc98c843, type: 3}
   - {fileID: 21300000, guid: 1d59c838c7dab7a42ab8a3a078021a95, type: 3}
-  - {fileID: 21300000, guid: d78c87ffa2f1ed64da1a9c3ea124a86b, type: 3}
+  - {fileID: 21300000, guid: 736bf7d36c942d1489f640f601bffa47, type: 3}
   reelFlame: {fileID: 1682803520}
   startPositionY: 0.5
   reelSpeed: 150
@@ -1340,10 +1340,34 @@ MonoBehaviour:
     battleVideoPath: tuda_battle5.mov
     victoryVideoPath: tuda_victory.mov
     defeatVideoPath: tuda_lose.mov
-    hitProbability: 0.174
+    hitProbability: 0
     victoryAudioClip: {fileID: 8300000, guid: 813e9ce93137ea649af4d0927a6611ac, type: 3}
     defeatAudioClip: {fileID: 8300000, guid: 7b26d91e94d3c1b4481a53a845c66c6d, type: 3}
-    allowsReplay: 0
+    allowsReplay: 1
+  - sprite: {fileID: 21300000, guid: 736bf7d36c942d1489f640f601bffa47, type: 3}
+    specialAudioClip: {fileID: 8300000, guid: 543b266e6fa5c4c42bcf6956874c1518, type: 3}
+    specialVideoPath: Nishino_appearance.mov
+    pointsForSprite: 2000
+    isBonusSprite: 1
+    battleVideoPath: Nishino_battle.mov
+    victoryVideoPath: Nishino_victory.mov
+    defeatVideoPath: Nishino_lose.mov
+    hitProbability: 0
+    victoryAudioClip: {fileID: 8300000, guid: 813e9ce93137ea649af4d0927a6611ac, type: 3}
+    defeatAudioClip: {fileID: 8300000, guid: 7b26d91e94d3c1b4481a53a845c66c6d, type: 3}
+    allowsReplay: 1
+  - sprite: {fileID: 21300000, guid: 1d59c838c7dab7a42ab8a3a078021a95, type: 3}
+    specialAudioClip: {fileID: 8300000, guid: 543b266e6fa5c4c42bcf6956874c1518, type: 3}
+    specialVideoPath: Murakami_Bonus.mov
+    pointsForSprite: 5000
+    isBonusSprite: 1
+    battleVideoPath: Murakami_Battle.mov
+    victoryVideoPath: Murakami_Victory.mov
+    defeatVideoPath: Murakami_Lose.mov
+    hitProbability: 0.462
+    victoryAudioClip: {fileID: 8300000, guid: 813e9ce93137ea649af4d0927a6611ac, type: 3}
+    defeatAudioClip: {fileID: 8300000, guid: 7b26d91e94d3c1b4481a53a845c66c6d, type: 3}
+    allowsReplay: 1
 --- !u!1 &1246038949
 GameObject:
   m_ObjectHideFlags: 0
@@ -1612,7 +1636,7 @@ SpriteRenderer:
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
-  m_Size: {x: 3.36, y: 1.92}
+  m_Size: {x: 6, y: 4.94}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
@@ -1745,7 +1769,7 @@ MonoBehaviour:
   spriteRenderer: {fileID: 1497880925}
   sprites:
   - {fileID: 21300000, guid: 79c79c38309b6704f874e8ebdc98c843, type: 3}
-  - {fileID: 21300000, guid: d78c87ffa2f1ed64da1a9c3ea124a86b, type: 3}
+  - {fileID: 21300000, guid: 736bf7d36c942d1489f640f601bffa47, type: 3}
   - {fileID: 21300000, guid: 1d59c838c7dab7a42ab8a3a078021a95, type: 3}
   - {fileID: 21300000, guid: 5153ddb5355f2bc448a67bf03bef804b, type: 3}
   reelFlame: {fileID: 1682803520}
@@ -1754,6 +1778,50 @@ MonoBehaviour:
   reelStep: 0.12
   stopSound: {fileID: 1497880928}
   stopSoundClip: {fileID: 8300000, guid: 5c6358a1bc3054b4db29c561617aee21, type: 3}
+--- !u!1 &1521185834
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1521185836}
+  - component: {fileID: 1521185835}
+  m_Layer: 0
+  m_Name: SessionManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1521185835
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1521185834}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5ea2c0abf5a8b9b4e9d99e126c2486e0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!4 &1521185836
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1521185834}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 497.59515, y: 241.10484, z: -4.3179636}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 13
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1563355766
 GameObject:
   m_ObjectHideFlags: 0
@@ -1982,7 +2050,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cf584f7aca7eaea4cac8d5715606fd76, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  quitButton: {fileID: 1569640798}
+  saveButton: {fileID: 1569640798}
   reelManager: {fileID: 1187932716}
 --- !u!1 &1593996727
 GameObject:
@@ -2050,7 +2118,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0.11000001, y: 1}
-  m_AnchoredPosition: {x: -23, y: 434}
+  m_AnchoredPosition: {x: -23.000122, y: 434}
   m_SizeDelta: {x: -29.9451, y: 870.1053}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1623325467
@@ -2367,7 +2435,7 @@ SpriteRenderer:
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
-  m_Size: {x: 3.36, y: 1.92}
+  m_Size: {x: 6, y: 4.94}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
@@ -2501,7 +2569,7 @@ MonoBehaviour:
   sprites:
   - {fileID: 21300000, guid: 1d59c838c7dab7a42ab8a3a078021a95, type: 3}
   - {fileID: 21300000, guid: 5153ddb5355f2bc448a67bf03bef804b, type: 3}
-  - {fileID: 21300000, guid: d78c87ffa2f1ed64da1a9c3ea124a86b, type: 3}
+  - {fileID: 21300000, guid: 736bf7d36c942d1489f640f601bffa47, type: 3}
   - {fileID: 21300000, guid: 79c79c38309b6704f874e8ebdc98c843, type: 3}
   reelFlame: {fileID: 1682803520}
   startPositionY: 0.5
@@ -2521,6 +2589,14 @@ PrefabInstance:
       propertyPath: m_Sprite
       value: 
       objectReference: {fileID: 21300000, guid: d1cead1ffa13e664abbc435c1da1e414, type: 3}
+    - target: {fileID: 3692973162272352871, guid: f1883eae24d94484f98e9f40e150fa6b, type: 3}
+      propertyPath: m_Size.x
+      value: 5.12
+      objectReference: {fileID: 0}
+    - target: {fileID: 3692973162272352871, guid: f1883eae24d94484f98e9f40e150fa6b, type: 3}
+      propertyPath: m_Size.y
+      value: 1.99
+      objectReference: {fileID: 0}
     - target: {fileID: 3692973162272352871, guid: f1883eae24d94484f98e9f40e150fa6b, type: 3}
       propertyPath: m_Sprite
       value: 

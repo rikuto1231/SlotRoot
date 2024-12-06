@@ -1,68 +1,101 @@
-using UnityEngine;
-
 public class PlayerController : MonoBehaviour
 {
-    public float speed = 5f;           // キャラクターの移動速度
-    public float jumpForce = 10f;      // ジャンプの力
-    private Rigidbody2D rb;            // キャラクターのRigidbody2Dコンポーネント
-    private bool isGrounded;           // キャラクターが地面に接しているかどうか
-    private float screenLeft;          // 画面の左端
-    private float screenRight;         // 画面の右端
+    [Header("Movement Parameters")]
+    [SerializeField] private float moveSpeed = 5f;
+    [SerializeField] private float jumpForce = 7f;
+    [SerializeField] private float groundCheckRadius = 0.2f;
 
-    void Start()
+    [Header("Key Config")]
+    [SerializeField] private KeyCode jumpKey = KeyCode.Space;    // ジャンプキー
+    [SerializeField] private KeyCode leftKey = KeyCode.A;        // 左移動キー
+    [SerializeField] private KeyCode rightKey = KeyCode.D;       // 右移動キー
+    [SerializeField] private bool useArrowKeys = true;          // 矢印キーを使用するかどうか
+
+    private Rigidbody2D rb;
+    private Animator animator;
+    private bool isGrounded;
+    private float moveInput;
+    private bool isFacingRight = true;
+
+    private void Start()
     {
         rb = GetComponent<Rigidbody2D>();
-        if (rb == null)
-        {
-            Debug.LogError("Rigidbody2D component is missing!");
-        }
-
-        // カメラの座標計算
-        float cameraDistance = Camera.main.transform.position.z - transform.position.z;
-        screenLeft = Camera.main.ViewportToWorldPoint(new Vector3(0, 0, cameraDistance)).x;
-        screenRight = Camera.main.ViewportToWorldPoint(new Vector3(1, 0, cameraDistance)).x;
-
-        Debug.Log("Screen Left: " + screenLeft + ", Screen Right: " + screenRight);
+        animator = GetComponent<Animator>();
     }
 
-    void Update()
+    private void Update()
     {
-        float moveInput = Input.GetAxis("Horizontal");
-        rb.velocity = new Vector2(moveInput * speed, rb.velocity.y);
+        // キーボード入力の処理
+        HandleKeyboardInput();
 
-        // 後ほどステージ入れかえのロジックを追加
-        if (transform.position.x > screenRight)
-        {
-            transform.position = new Vector3(screenLeft, transform.position.y, transform.position.z);
-            Debug.Log("Moved to left side of the screen");
-        }
-        else if (transform.position.x < screenLeft)
-        {
-            transform.position = new Vector3(screenRight, transform.position.y, transform.position.z);
-            Debug.Log("Moved to right side of the screen");
-        }
+        // ジャンプ処理
+        HandleJump();
 
+        // アニメーション更新
+        UpdateAnimations();
+    }
+
+    private void HandleKeyboardInput()
+    {
+        // WASDキーの処理
+        if (Input.GetKey(leftKey))
+            moveInput = -1f;
+        else if (Input.GetKey(rightKey))
+            moveInput = 1f;
+        else
+            moveInput = 0f;
+
+        // 矢印キーの処理（有効な場合）
+        if (useArrowKeys)
+        {
+            if (Input.GetKey(KeyCode.LeftArrow))
+                moveInput = -1f;
+            else if (Input.GetKey(KeyCode.RightArrow))
+                moveInput = 1f;
+        }
+    }
+
+    private void HandleJump()
+    {
+        // スペースキーまたは設定されたジャンプキーでジャンプ
+        if ((Input.GetKeyDown(jumpKey) || (useArrowKeys && Input.GetKeyDown(KeyCode.UpArrow))) && isGrounded)
+        {
+            Jump();
+        }
+    }
+
+    private void FixedUpdate()
+    {
+        // 接地判定
+        CheckGrounded();
         
-        if (Input.GetKeyDown(KeyCode.Space) && isGrounded)
-        {
-            rb.velocity = Vector2.up * jumpForce;
-        }
+        // 移動処理
+        Move();
+
+        // 向きの更新
+        CheckFlip();
     }
 
-    private void OnCollisionEnter2D(Collision2D collision)
+    private void Move()
     {
-
-        if (collision.gameObject.CompareTag("Ground"))
-        {
-            isGrounded = true;
-        }
+        rb.velocity = new Vector2(moveInput * moveSpeed, rb.velocity.y);
     }
 
-    private void OnCollisionExit2D(Collision2D collision)
+    private void Jump()
     {
-        if (collision.gameObject.CompareTag("Ground"))
+        rb.velocity = new Vector2(rb.velocity.x, jumpForce);
+        // ジャンプ効果音を再生する場合はここに追加
+    }
+
+    // デバッグ用のキー設定表示
+    private void OnGUI()
+    {
+        if (Debug.isDebugBuild)
         {
-            isGrounded = false;
+            GUILayout.BeginArea(new Rect(10, 10, 200, 100));
+            GUILayout.Label($"Move: {leftKey}/{rightKey} or Arrow Keys");
+            GUILayout.Label($"Jump: {jumpKey} or Up Arrow");
+            GUILayout.EndArea();
         }
     }
 }

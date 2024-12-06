@@ -14,7 +14,7 @@ public class ReelManager : MonoBehaviour
 
     private int currentReelIndex = 0;
     private bool isReelActive = false;
-    private int playerPoints = 0;
+    private int point = 0; 
     private int rotationCount = 0;
     private int bonusReelCount = 0;
     private bool canRotate = true;
@@ -22,19 +22,22 @@ public class ReelManager : MonoBehaviour
     private SpriteEffect currentEffect;
     private bool isBattleResultChecked = false;
     private bool canReplay = false;
+    private bool isPointDirty = false;
+    private const int SAVE_THRESHOLD = 10;
+    private int changeCount = 0;
 
     private void Start()
     {
         InitializeGame();
     }
 
-private void InitializeGame()
-{
-    ApiManager.GetUserPoints(this, UserSession.UserId, points => {
-        playerPoints = points;
-        UpdatePointDisplay();
-    });
-}
+    private void InitializeGame()
+    {
+        ApiManager.GetUserPoint(this, UserSession.UserId, point => {
+            this.point = point;
+            UpdatePointDisplay();
+        });
+    }
 
     private void Update()
     {
@@ -245,24 +248,36 @@ private void InitializeGame()
         }
     }
 
-private void AddPoints(int amount)
-{
-    playerPoints += amount;
-    UpdatePointDisplay();
-    ApiManager.SaveUserPoints(this, UserSession.UserId, playerPoints);
-}
+    private void AddPoints(int amount)
+    {
+        point += amount;
+        UpdatePointDisplay();
+        isPointDirty = true;
+        changeCount++;
+
+        if (changeCount >= SAVE_THRESHOLD)
+        {
+            SaveCurrentPoints();
+            changeCount = 0;
+        }
+    }
+
+        public void SaveCurrentPoints()
+    {
+        if (isPointDirty)
+        {
+            Debug.Log($"ポイントを保存します: {point}");
+            ApiManager.SaveUserPoint(this, UserSession.UserId, point);
+            isPointDirty = false;
+        }
+    }
 
     private void UpdatePointDisplay()
     {
         if (pointText != null)
         {
-            pointText.text = $"{playerPoints}P";
+            pointText.text = $"{point}P";
         }
     }
 
-    public void ResetPoints()
-    {
-        playerPoints = 0;
-        UpdatePointDisplay();
-    }
 }
