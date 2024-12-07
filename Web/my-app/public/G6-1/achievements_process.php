@@ -27,6 +27,7 @@ class UserAchievements {
                     t.trophy_id,
                     t.name AS trophy_name,
                     t.point AS trophy_point,
+                    t.image,
                     COUNT(ut.trophy_id) as quantity
                 FROM 
                     trophy t
@@ -35,7 +36,7 @@ class UserAchievements {
                 WHERE 
                     ut.user_id = :user_id
                 GROUP BY 
-                    t.trophy_id, t.name, t.point
+                    t.trophy_id, t.name, t.point,t.image
                 ORDER BY 
                     t.trophy_id ASC
             ";

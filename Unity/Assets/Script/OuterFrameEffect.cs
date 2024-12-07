@@ -6,8 +6,8 @@ public class OuterFrameEffect : MonoBehaviour
 {
     [SerializeField] private Image frameRenderer; // Image コンポーネントを指定
     [SerializeField] private Color defaultColor; // デフォルトの色
-    [SerializeField] private float blinkDuration = 0.5f; // 点滅の持続時間
-    [SerializeField] private int blinkCount = 6; // 点滅回数
+    [SerializeField] private float blinkDuration = 0.6f; // 点滅の持続時間
+    [SerializeField] private int blinkCount = 8; // 点滅回数
 
     private Coroutine blinkCoroutine; // 実行中のコルーチンを管理するための変数
 

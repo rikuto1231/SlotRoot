@@ -1340,7 +1340,7 @@ MonoBehaviour:
     battleVideoPath: Murakami_Battle.mp4
     victoryVideoPath: Murakami_Victory.mp4
     defeatVideoPath: Murakami_Lose.mp4
-    hitProbability: 0.03
+    hitProbability: 0.01
     victoryAudioClip: {fileID: 8300000, guid: 813e9ce93137ea649af4d0927a6611ac, type: 3}
     defeatAudioClip: {fileID: 8300000, guid: 7b26d91e94d3c1b4481a53a845c66c6d, type: 3}
     allowsReplay: 1
@@ -1352,7 +1352,7 @@ MonoBehaviour:
     battleVideoPath: Nishino_Battle.mp4
     victoryVideoPath: Nishino_Victory.mp4
     defeatVideoPath: Nishinoi_Lose.mp4
-    hitProbability: 0.112
+    hitProbability: 0.04
     victoryAudioClip: {fileID: 8300000, guid: 813e9ce93137ea649af4d0927a6611ac, type: 3}
     defeatAudioClip: {fileID: 8300000, guid: 7b26d91e94d3c1b4481a53a845c66c6d, type: 3}
     allowsReplay: 1
@@ -1364,7 +1364,7 @@ MonoBehaviour:
     battleVideoPath: Tuda_Battle.mp4
     victoryVideoPath: Tuda_Victory.mp4
     defeatVideoPath: Tuda_Lose.mp4
-    hitProbability: 0.08
+    hitProbability: 0.07
     victoryAudioClip: {fileID: 8300000, guid: 813e9ce93137ea649af4d0927a6611ac, type: 3}
     defeatAudioClip: {fileID: 8300000, guid: 7b26d91e94d3c1b4481a53a845c66c6d, type: 3}
     allowsReplay: 1
@@ -1376,7 +1376,7 @@ MonoBehaviour:
     battleVideoPath: Maezono_Battle.mp4
     victoryVideoPath: Maezono_Victory.mp4
     defeatVideoPath: Maezono_Lose.mp4
-    hitProbability: 0.592
+    hitProbability: 0.09
     victoryAudioClip: {fileID: 8300000, guid: 813e9ce93137ea649af4d0927a6611ac, type: 3}
     defeatAudioClip: {fileID: 8300000, guid: 7b26d91e94d3c1b4481a53a845c66c6d, type: 3}
     allowsReplay: 1
@@ -2130,7 +2130,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0.11000001, y: 1}
-  m_AnchoredPosition: {x: -23, y: 434}
+  m_AnchoredPosition: {x: -22.999817, y: 434}
   m_SizeDelta: {x: -29.9451, y: 870.1053}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1623325467
