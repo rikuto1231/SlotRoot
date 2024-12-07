@@ -1335,12 +1335,48 @@ MonoBehaviour:
   - sprite: {fileID: 21300000, guid: 1d59c838c7dab7a42ab8a3a078021a95, type: 3}
     specialAudioClip: {fileID: 8300000, guid: 543b266e6fa5c4c42bcf6956874c1518, type: 3}
     specialVideoPath: Murakami_Bonus.mp4
-    pointsForSprite: 2000
+    pointsForSprite: 5000
     isBonusSprite: 1
     battleVideoPath: Murakami_Battle.mp4
     victoryVideoPath: Murakami_Victory.mp4
     defeatVideoPath: Murakami_Lose.mp4
-    hitProbability: 0.28
+    hitProbability: 0.03
+    victoryAudioClip: {fileID: 8300000, guid: 813e9ce93137ea649af4d0927a6611ac, type: 3}
+    defeatAudioClip: {fileID: 8300000, guid: 7b26d91e94d3c1b4481a53a845c66c6d, type: 3}
+    allowsReplay: 1
+  - sprite: {fileID: 21300000, guid: 736bf7d36c942d1489f640f601bffa47, type: 3}
+    specialAudioClip: {fileID: 8300000, guid: 543b266e6fa5c4c42bcf6956874c1518, type: 3}
+    specialVideoPath: Nishino_Bonus.mp4
+    pointsForSprite: 2000
+    isBonusSprite: 1
+    battleVideoPath: Nishino_Battle.mp4
+    victoryVideoPath: Nishino_Victory.mp4
+    defeatVideoPath: Nishinoi_Lose.mp4
+    hitProbability: 0.112
+    victoryAudioClip: {fileID: 8300000, guid: 813e9ce93137ea649af4d0927a6611ac, type: 3}
+    defeatAudioClip: {fileID: 8300000, guid: 7b26d91e94d3c1b4481a53a845c66c6d, type: 3}
+    allowsReplay: 1
+  - sprite: {fileID: 21300000, guid: 79c79c38309b6704f874e8ebdc98c843, type: 3}
+    specialAudioClip: {fileID: 8300000, guid: 543b266e6fa5c4c42bcf6956874c1518, type: 3}
+    specialVideoPath: Tuda_Bonus.mp4
+    pointsForSprite: 2000
+    isBonusSprite: 1
+    battleVideoPath: Tuda_Battle.mp4
+    victoryVideoPath: Tuda_Victory.mp4
+    defeatVideoPath: Tuda_Lose.mp4
+    hitProbability: 0.08
+    victoryAudioClip: {fileID: 8300000, guid: 813e9ce93137ea649af4d0927a6611ac, type: 3}
+    defeatAudioClip: {fileID: 8300000, guid: 7b26d91e94d3c1b4481a53a845c66c6d, type: 3}
+    allowsReplay: 1
+  - sprite: {fileID: 21300000, guid: 5153ddb5355f2bc448a67bf03bef804b, type: 3}
+    specialAudioClip: {fileID: 8300000, guid: 543b266e6fa5c4c42bcf6956874c1518, type: 3}
+    specialVideoPath: Maezono_Bonus.mp4
+    pointsForSprite: 2000
+    isBonusSprite: 1
+    battleVideoPath: Maezono_Battle.mp4
+    victoryVideoPath: Maezono_Victory.mp4
+    defeatVideoPath: Maezono_Lose.mp4
+    hitProbability: 0.592
     victoryAudioClip: {fileID: 8300000, guid: 813e9ce93137ea649af4d0927a6611ac, type: 3}
     defeatAudioClip: {fileID: 8300000, guid: 7b26d91e94d3c1b4481a53a845c66c6d, type: 3}
     allowsReplay: 1
