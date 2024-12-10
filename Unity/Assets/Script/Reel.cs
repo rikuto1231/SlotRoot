@@ -3,26 +3,24 @@ using UnityEngine;
 
 public class Reel : MonoBehaviour
 {
-    [SerializeField] private float resetPosition = -3.0f; // リールがリセットされる位置
-    [SerializeField] private SpriteRenderer spriteRenderer; // 画像を表示するためのSpriteRenderer
-    [SerializeField] private Sprite[] sprites; // スプライト配列
-    [SerializeField] private Transform reelFlame; // Reel_Flameオブジェクト
+    [SerializeField] private float resetPosition = -3.0f;
+    [SerializeField] private SpriteRenderer spriteRenderer;
+    [SerializeField] private Sprite[] sprites;
+    [SerializeField] private Transform reelFlame;
 
-    [SerializeField] private float startPositionY = 0.5f; // スタート位置のY座標
-    [SerializeField] private float reelSpeed = 150f; // 回転速度（`Time.deltaTime` を使うために正の値に変更）
-    [SerializeField] private float reelStep = 0.12f; // ステップサイズ
+    [SerializeField] private float startPositionY = 0.5f;
+    [SerializeField] private float reelSpeed = 200f;
+    [SerializeField] private float reelStep = 0.12f;
 
-    // 音声関連
-    [SerializeField] private AudioSource stopSound; // 停止時の効果音用のAudioSource
-    [SerializeField] private AudioClip stopSoundClip; // 停止時の効果音用のAudioClip
+    [SerializeField] private AudioSource stopSound;
+    [SerializeField] private AudioClip stopSoundClip;
 
-    private bool reelStart = false; // リールが回転しているかどうか
-    private int currentSpriteIndex = 0; // 現在のスプライトインデックス
+    private bool reelStart = false;
+    private int currentSpriteIndex = 0;
     private Vector2 startPosition;
 
     private void Awake()
     {
-        // スタート位置の設定
         startPosition = new Vector2(transform.position.x, startPositionY);
 
         if (spriteRenderer == null)
@@ -35,15 +33,14 @@ public class Reel : MonoBehaviour
         }
         if (sprites.Length > 0)
         {
-            spriteRenderer.sprite = sprites[0]; // 最初のスプライトを設定
+            spriteRenderer.sprite = sprites[0];
         }
 
-        // AudioSourceが設定されていない場合は追加する
         if (stopSound == null)
         {
             stopSound = gameObject.AddComponent<AudioSource>();
         }
-        stopSound.clip = stopSoundClip; // 効果音を設定
+        stopSound.clip = stopSoundClip;
     }
 
     public void StartReel()
@@ -62,13 +59,11 @@ public class Reel : MonoBehaviour
     {
         reelStart = false;
 
-        // 効果音を再生
         if (stopSound != null && stopSoundClip != null)
         {
-            stopSound.Play(); // リール停止時に効果音を再生
+            stopSound.Play();
         }
 
-        // 停止時にReel_Flameの縦中央位置で止まるように調整
         AdjustPositionToReelFlameCenter();
     }
 
@@ -76,22 +71,16 @@ public class Reel : MonoBehaviour
     {
         while (reelStart)
         {
-            // リセット位置に達したらスタート位置に戻す
             if (transform.position.y <= resetPosition)
             {
                 transform.position = startPosition;
-
-                // スプライトのインデックスを更新
                 currentSpriteIndex = (currentSpriteIndex + 1) % sprites.Length;
                 spriteRenderer.sprite = sprites[currentSpriteIndex];
-                // Debug.Log($"リールのスプライトを {currentSpriteIndex} に更新しました。");
             }
 
-            // フレームレート非依存の回転処理
             transform.position = new Vector2(transform.position.x, transform.position.y - (reelStep * Time.deltaTime * reelSpeed));
 
-            // 次のフレームまで待機
-            yield return null; 
+            yield return null;
         }
     }
 
@@ -103,10 +92,7 @@ public class Reel : MonoBehaviour
             return;
         }
 
-        // Reel_Flameの中央位置を取得
         float reelFlameCenterY = reelFlame.position.y;
-
-        // リールの位置をReel_Flameの中央位置に合わせる
         transform.position = new Vector2(transform.position.x, reelFlameCenterY);
     }
 

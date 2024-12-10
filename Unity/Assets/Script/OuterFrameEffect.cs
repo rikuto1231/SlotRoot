@@ -1,35 +1,32 @@
-using System.Collections; // IEnumeratorを使用するために必要
+using System.Collections;
 using UnityEngine;
-using UnityEngine.UI; // Image用の名前空間
+using UnityEngine.UI;
 
 public class OuterFrameEffect : MonoBehaviour
 {
-    [SerializeField] private Image frameRenderer; // Image コンポーネントを指定
-    [SerializeField] private Color defaultColor; // デフォルトの色
-    [SerializeField] private float blinkDuration = 0.6f; // 点滅の持続時間
-    [SerializeField] private int blinkCount = 8; // 点滅回数
+    [SerializeField] private Image frameRenderer;
+    [SerializeField] private Color defaultColor;
+    [SerializeField] private float blinkDuration = 0.6f;
+    [SerializeField] private int blinkCount = 8;
 
-    private Coroutine blinkCoroutine; // 実行中のコルーチンを管理するための変数
+    private Coroutine blinkCoroutine;
 
     private void Start()
     {
-        // Image コンポーネントを取得し、デフォルトの色を保存
         if (frameRenderer == null)
         {
-            frameRenderer = GetComponent<Image>(); // 自分自身の Image コンポーネントを取得
+            frameRenderer = GetComponent<Image>();
         }
         defaultColor = Color.white;
     }
 
     public void StartBlinking(int blinkType)
     {
-        // 既に点滅処理が実行中の場合は停止
         if (blinkCoroutine != null)
         {
-            StopCoroutine(blinkCoroutine); // 実行中の点滅処理を停止
+            StopCoroutine(blinkCoroutine);
         }
 
-        // 新しい点滅処理を開始
         blinkCoroutine = StartCoroutine(BlinkEffect(blinkType));
     }
 
@@ -37,65 +34,60 @@ public class OuterFrameEffect : MonoBehaviour
     {
         Color blinkColor;
 
-        // 引数に基づいて色を設定
         switch (blinkType)
         {
             case 1:
-                blinkColor = Color.yellow; // 黄色
+                blinkColor = Color.yellow;
                 break;
             case 2:
-                blinkColor = Color.red; // 赤色
+                blinkColor = Color.red;
                 break;
             case 3:
-                blinkColor = Color.green; // 緑色
+                blinkColor = Color.green;
                 break;
             default:
-                blinkColor = defaultColor; // デフォルトの色
+                blinkColor = defaultColor;
                 break;
         }
 
-        // 点滅処理
-        for (int i = 0; i < blinkCount; i++) // 点滅回数分ループ
+        for (int i = 0; i < blinkCount; i++)
         {
-            frameRenderer.color = blinkColor; // 点滅色に変更
+            frameRenderer.color = blinkColor;
             yield return new WaitForSeconds(blinkDuration);
-            frameRenderer.color = defaultColor; // デフォルトの色に戻す
+            frameRenderer.color = defaultColor;
             yield return new WaitForSeconds(blinkDuration);
         }
 
-        frameRenderer.color = defaultColor; // 最後にデフォルトの色に戻す
-        blinkCoroutine = null; // コルーチンが終了したことを示す
+        frameRenderer.color = defaultColor;
+        blinkCoroutine = null;
     }
-
 
     public void ChangeColor(int colorType)
     {
         Debug.Log("ChangeColor");
         Color newColor;
 
-        // 引数に基づいて色を設定
         switch (colorType)
         {
             case 1:
-                newColor = Color.yellow; // 黄色
+                newColor = Color.yellow;
                 break;
             case 2:
-                newColor = Color.red; // 赤色
+                newColor = Color.red;
                 break;
             case 3:
-                newColor = Color.green; // 緑色
+                newColor = Color.green;
                 break;
             default:
-                newColor = defaultColor; // デフォルトの色
+                newColor = defaultColor;
                 break;
         }
 
-        frameRenderer.color = newColor; // 色を変更
+        frameRenderer.color = newColor;
     }
 
     public void ResetColor()
     {
-        frameRenderer.color = defaultColor; // デフォルトの色に戻す
+        frameRenderer.color = defaultColor;
     }
-
 }

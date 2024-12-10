@@ -1,7 +1,9 @@
 using UnityEngine;
 using System.Collections.Generic;
 using TMPro;
+using UnityEngine.UI;
 
+// 追加要件：フレームとライトの点滅処理を同期するために共通管理クラス方式に移行。
 public class ReelManager : MonoBehaviour
 {
     [SerializeField] private List<Reel> reels;
@@ -10,7 +12,10 @@ public class ReelManager : MonoBehaviour
     [SerializeField] private TextMeshProUGUI pointText;
     [SerializeField] private OuterFrameEffect outerFrameEffect;
     [SerializeField] private AudioClip spacePressSound;
+    [SerializeField] private Image bonusImage;
+    [SerializeField] private ParticleEffectManager effectManager;
     [SerializeField] private List<SpriteEffect> spriteEffects;
+    
 
     private int currentReelIndex = 0;
     private bool isReelActive = false;
@@ -67,7 +72,7 @@ public class ReelManager : MonoBehaviour
         PlaySpacePressSound();
         StartAllReels();
         rotationCount++;
-        AddPoints(-10);
+        AddPoints(-100);
         CheckForBonusDraw();
     }
 
@@ -77,7 +82,7 @@ public class ReelManager : MonoBehaviour
         StartAllReels();
         rotationCount++;
         bonusReelCount++;
-        AddPoints(30);
+        AddPoints(150);
 
         if (bonusReelCount >= 10 && !isBattleResultChecked)
         {
@@ -139,13 +144,26 @@ public class ReelManager : MonoBehaviour
 
     private void CheckForBonusDraw()
     {
+        float totalProbability = 0f;
         foreach (var effect in spriteEffects)
         {
-            if (Random.value < effect.hitProbability)
+            totalProbability += effect.hitProbability;
+        }
+
+        float randomValue = Random.value;
+        float currentSum = 0f;
+
+        if (randomValue < totalProbability)
+        {
+            foreach (var effect in spriteEffects)
             {
-                currentEffect = effect;
-                EnterBonusState();
-                break;
+                currentSum += effect.hitProbability;
+                if (randomValue < currentSum)
+                {
+                    currentEffect = effect;
+                    EnterBonusState();
+                    break;
+                }
             }
         }
     }
@@ -156,7 +174,18 @@ public class ReelManager : MonoBehaviour
         {
             isInBonusState = true;
             bonusReelCount = 0;
+            
             outerFrameEffect.StartBlinking(2);
+            if (effectManager != null)
+            {
+                effectManager.StartBlinking(2);
+            }
+            
+            if (bonusImage != null && currentEffect != null && currentEffect.bonusDisplaySprite != null)
+            {
+                bonusImage.sprite = currentEffect.bonusDisplaySprite;
+                bonusImage.gameObject.SetActive(true);
+            }
             
             videoPlayManager.OnBonusVideoEnded += HandleBonusVideoEnd;
             videoPlayManager.PlayBonusVideo(currentEffect.specialVideoPath);
@@ -174,13 +203,24 @@ public class ReelManager : MonoBehaviour
     {
         videoPlayManager.OnBonusVideoEnded -= HandleBonusVideoEnd;
         canRotate = true;
-        outerFrameEffect.ChangeColor(2);  // フレームを赤色に変更
+        
+        outerFrameEffect.ChangeColor(2);
+        if (effectManager != null)
+        {
+            effectManager.ChangeColor(2);
+        }
+        
         videoPlayManager.PlayBattleVideo(currentEffect.battleVideoPath);
     }
 
     private void PlayVictoryVideo()
     {
         outerFrameEffect.StartBlinking(1);
+        if (effectManager != null)
+        {
+            effectManager.StartBlinking(1); 
+        }
+        
         videoPlayManager.StopBattleVideo();
         
         videoPlayManager.OnSpecialVideoEnded += HandleVictoryVideoEnd;
@@ -197,7 +237,7 @@ public class ReelManager : MonoBehaviour
 
     private void PlayDefeatVideo()
     {
-        outerFrameEffect.ResetColor();  // フレームの色をリセット
+        outerFrameEffect.ResetColor();
         videoPlayManager.StopBattleVideo();
         
         videoPlayManager.OnSpecialVideoEnded += HandleDefeatVideoEnd;
@@ -236,7 +276,18 @@ public class ReelManager : MonoBehaviour
         isBattleResultChecked = false;
         bonusReelCount = 0;
         canRotate = true;
-        outerFrameEffect.ResetColor();  // フレームの色をリセット
+        
+        if (bonusImage != null)
+        {
+            bonusImage.gameObject.SetActive(false);
+        }
+        
+        outerFrameEffect.ResetColor();
+        if (effectManager != null)
+        {
+            effectManager.SetDefaultState();
+        }
+        
         videoPlayManager.PlayDefaultVideo();
     }
 
@@ -262,7 +313,7 @@ public class ReelManager : MonoBehaviour
         }
     }
 
-        public void SaveCurrentPoints()
+    public void SaveCurrentPoints()
     {
         if (isPointDirty)
         {
@@ -279,5 +330,4 @@ public class ReelManager : MonoBehaviour
             pointText.text = $"{point}P";
         }
     }
-
 }

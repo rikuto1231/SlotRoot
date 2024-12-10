@@ -1,18 +1,19 @@
 using UnityEngine;
 using UnityEngine.Video;
+using System.Collections.Generic;
 
 public class VideoPlaybackController : MonoBehaviour
 {
-    // デリゲートとイベントの定義
     public delegate void VideoEndHandler();
     public event VideoEndHandler OnBonusVideoEnded;
     public event VideoEndHandler OnBattleVideoEnded;
     public event VideoEndHandler OnSpecialVideoEnded;
 
     [SerializeField] private VideoPlayer videoPlayer;
-    [SerializeField] private string defaultVideoPath = "Murakami_Default.mp4";
-    
+    [SerializeField] private List<string> defaultVideoPaths;
+
     public bool IsVictoryVideoPlaying { get; private set; }
+    private bool isPlayingDefaultVideo = false;
 
     private void Awake()
     {
@@ -27,14 +28,13 @@ public class VideoPlaybackController : MonoBehaviour
         }
 
         videoPlayer.source = VideoSource.Url;
-        videoPlayer.isLooping = true;
+        videoPlayer.isLooping = false;
         videoPlayer.SetDirectAudioMute(0, true);
-        videoPlayer.skipOnDrop = true;  // この1行だけ追加
+        videoPlayer.skipOnDrop = true;
 
+        videoPlayer.loopPointReached += OnDefaultVideoEnd;
         
-        string fullPath = System.IO.Path.Combine(Application.streamingAssetsPath, defaultVideoPath);
-        videoPlayer.url = fullPath;
-        videoPlayer.Play();
+        PlayDefaultVideo();
     }
 
     public void PlaySpecialVideo(string videoPath)
@@ -45,6 +45,7 @@ public class VideoPlaybackController : MonoBehaviour
             return;
         }
 
+        isPlayingDefaultVideo = false;
         IsVictoryVideoPlaying = true;
         PlayVideo(videoPath, false);
         videoPlayer.loopPointReached += OnSpecialVideoEnd;
@@ -54,6 +55,7 @@ public class VideoPlaybackController : MonoBehaviour
     {
         if (string.IsNullOrEmpty(videoPath)) return;
 
+        isPlayingDefaultVideo = false;
         IsVictoryVideoPlaying = true;
         PlayVideo(videoPath, false);
         videoPlayer.loopPointReached += OnBonusVideoEnd;
@@ -63,7 +65,8 @@ public class VideoPlaybackController : MonoBehaviour
     {
         if (string.IsNullOrEmpty(videoPath)) return;
 
-        PlayVideo(videoPath, true);  // バトル動画はループ再生
+        isPlayingDefaultVideo = false;
+        PlayVideo(videoPath, true);
         videoPlayer.loopPointReached += OnBattleVideoEnd;
     }
 
@@ -77,10 +80,28 @@ public class VideoPlaybackController : MonoBehaviour
 
     public void PlayDefaultVideo()
     {
-        string fullPath = System.IO.Path.Combine(Application.streamingAssetsPath, defaultVideoPath);
+        if (defaultVideoPaths == null || defaultVideoPaths.Count == 0)
+        {
+            Debug.LogError("Default video paths are not set!");
+            return;
+        }
+
+        isPlayingDefaultVideo = true;
+        int randomIndex = Random.Range(0, defaultVideoPaths.Count);
+        string randomVideoPath = defaultVideoPaths[randomIndex];
+        string fullPath = System.IO.Path.Combine(Application.streamingAssetsPath, randomVideoPath);
+
         videoPlayer.url = fullPath;
-        videoPlayer.isLooping = true;
+        videoPlayer.isLooping = false;
         videoPlayer.Play();
+    }
+
+    private void OnDefaultVideoEnd(VideoPlayer vp)
+    {
+        if (isPlayingDefaultVideo)
+        {
+            PlayDefaultVideo();
+        }
     }
 
     private void OnSpecialVideoEnd(VideoPlayer vp)
@@ -88,6 +109,7 @@ public class VideoPlaybackController : MonoBehaviour
         IsVictoryVideoPlaying = false;
         OnSpecialVideoEnded?.Invoke();
         videoPlayer.loopPointReached -= OnSpecialVideoEnd;
+        PlayDefaultVideo();
     }
 
     private void OnBonusVideoEnd(VideoPlayer vp)
@@ -105,6 +127,15 @@ public class VideoPlaybackController : MonoBehaviour
     public void StopBattleVideo()
     {
         videoPlayer.loopPointReached -= OnBattleVideoEnd;
+        isPlayingDefaultVideo = true;
         PlayDefaultVideo();
+    }
+
+    private void OnDisable()
+    {
+        if (videoPlayer != null)
+        {
+            videoPlayer.loopPointReached -= OnDefaultVideoEnd;
+        }
     }
 }

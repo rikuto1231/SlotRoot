@@ -1,73 +1,59 @@
 <?php
-// 必要に応じてセッションや認証チェックをここに追加できます。
+ob_start(); // 出力バッファリングを開始
+session_start();
+
+// セッションチェック（ログインしていない場合はリダイレクト）
+if (!isset($_SESSION['is_admin']) || $_SESSION['is_admin'] !== true) {
+    header('Location: ../K1-1/K1-1.php');
+    exit;
+}
 ?>
 <!DOCTYPE html>
 <html lang="ja">
 <head>
-    <meta charset="UTF-8">
+    <?php require_once '../../src/common/common_head.php'; ?>
     <title>K1-1 管理画面</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #f0f0f0;
-            margin: 0;
-            padding: 0;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-        }
-        .container {
-            display: flex;
-            justify-content: center;
-            gap: 70px; /* ボタン間隔をさらに広げる */
-        }
-        .button {
-            width: 400px; /* ボタンの幅をさらに拡大 */
-            height: 150px; /* ボタンの高さをさらに拡大 */
-            font-size: 32px; /* フォントサイズをさらに大きく */
-            font-weight: bold; /* 太字で強調 */
-            text-align: center;
-            line-height: 150px; /* ボタン内テキストを中央揃え */
-            text-decoration: none;
-            color: #fff;
-            background-color: #007BFF;
-            border: none;
-            border-radius: 20px; /* ボタンの丸みを強調 */
-            transition: background-color 0.3s ease, transform 0.2s ease;
-        }
-        .button:hover {
-            background-color: #0056b3;
-            transform: scale(1.15); /* ホバー時の拡大率をさらにアップ */
-        }
-        .back-button {
-            position: absolute;
-            top: 20px;
-            right: 20px;
-            padding: 15px 20px;
-            font-size: 18px;
-            color: #007BFF;
-            background-color: #fff;
-            border: 1px solid #007BFF;
-            border-radius: 8px;
-            text-decoration: none;
-            transition: background-color 0.3s ease, color 0.3s ease;
-        }
-        .back-button:hover {
-            background-color: #007BFF;
-            color: #fff;
-        }
-    </style>
 </head>
-<body>
-<a href="../K1-1/K1-1.html">
-  <button class="back-button">戻る</button>
-</a>
-    <div class="container">
-        <!-- 修正: K3-2/K3-2.phpへのリンク -->
-        <a href="../K3-2/K3-2.php" class="button">ユーザー情報</a>
-        <a href="../K3-1/K3-1.php" class="button">ランキング情報</a>
+<body class="bg-gray-100 min-h-screen flex flex-col items-center justify-center p-4 relative">
+    <!-- ログアウトボタン -->
+    <button onclick="handleLogout()" 
+            class="absolute top-5 right-5 px-6 py-3 text-lg text-red-600 bg-white border-2 border-red-600 rounded-lg 
+                transition-all duration-300 hover:bg-red-600 hover:text-white">
+        ログアウト
+    </button>
+
+    <!-- メインコンテナ -->
+    <div class="flex justify-center space-x-20">
+        <!-- ユーザー情報ボタン -->
+        <a href="../K3-2/K3-2.php" 
+        class="w-[400px] h-[150px] flex items-center justify-center text-3xl font-bold text-white bg-blue-600 
+                rounded-2xl transform transition-all duration-300 hover:bg-blue-700 hover:scale-110">
+            ユーザー情報
+        </a>
+
+        <!-- ランキング情報ボタン -->
+        <a href="../K3-1/K3-1.php" 
+        class="w-[400px] h-[150px] flex items-center justify-center text-3xl font-bold text-white bg-blue-600 
+                rounded-2xl transform transition-all duration-300 hover:bg-blue-700 hover:scale-110">
+            ランキング情報
+        </a>
     </div>
+
+    <script>
+        function handleLogout() {
+            // ログアウト処理のAPIを呼び出し
+            fetch('logout.php')
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        window.location.href = '../K1-1/K1-1.php';
+                    }
+                })
+                .catch(error => {
+                    console.error('ログアウトエラー:', error);
+                });
+        }
+    </script>
 </body>
 </html>
+<?php ob_end_flush(); // 出力バッファリングを終了 ?>
