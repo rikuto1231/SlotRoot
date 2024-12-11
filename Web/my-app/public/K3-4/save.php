@@ -11,9 +11,9 @@ try {
     // POSTデータの受け取り
     if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         // データの取得と検証
-        $user_id = $_POST['user_id'] ?? '';  // 変更
-        $name = $_POST['name'] ?? '';        // 変更
-        $points = $_POST['points'] ?? null;   // 変更
+        $user_id = $_POST['user_id'] ?? '';
+        $name = $_POST['name'] ?? '';
+        $points = $_POST['points'] ?? null;
 
         // データ検証
         if (empty($user_id) || empty($name) || $points === null) {
@@ -29,7 +29,7 @@ try {
         $pdo->beginTransaction();
 
         try {
-            // 更新日時を含めて更新
+            // ユーザー情報の更新
             $sql = "UPDATE user 
                    SET name = :name, 
                        point = :point,
@@ -40,16 +40,54 @@ try {
             $stmt->bindValue(':name', $name, PDO::PARAM_STR);
             $stmt->bindValue(':point', (int)$points, PDO::PARAM_INT);
             $stmt->bindValue(':user_id', (int)$user_id, PDO::PARAM_INT);
-
-            // 実行
+            
             if (!$stmt->execute()) {
                 throw new Exception('データの更新に失敗しました');
+            }
+
+            // 実績数の更新
+            if (isset($_POST['trophy_count'])) {
+                foreach ($_POST['trophy_count'] as $trophy_id => $count) {
+                    // 現在の実績数を取得
+                    $currentCountSql = "SELECT COUNT(*) as current_count 
+                                      FROM user_trophy 
+                                      WHERE user_id = :user_id AND trophy_id = :trophy_id";
+                    $countStmt = $pdo->prepare($currentCountSql);
+                    $countStmt->bindValue(':user_id', $user_id, PDO::PARAM_INT);
+                    $countStmt->bindValue(':trophy_id', $trophy_id, PDO::PARAM_INT);
+                    $countStmt->execute();
+                    $currentCount = $countStmt->fetch(PDO::FETCH_ASSOC)['current_count'];
+
+                    if ($count > $currentCount) {
+                        // 実績を追加
+                        $diff = $count - $currentCount;
+                        for ($i = 0; $i < $diff; $i++) {
+                            $insertSql = "INSERT INTO user_trophy (user_id, trophy_id) 
+                                        VALUES (:user_id, :trophy_id)";
+                            $insertStmt = $pdo->prepare($insertSql);
+                            $insertStmt->bindValue(':user_id', $user_id, PDO::PARAM_INT);
+                            $insertStmt->bindValue(':trophy_id', $trophy_id, PDO::PARAM_INT);
+                            $insertStmt->execute();
+                        }
+                    } elseif ($count < $currentCount) {
+                        // 実績を削除
+                        $diff = $currentCount - $count;
+                        $deleteSql = "DELETE FROM user_trophy 
+                                     WHERE user_id = :user_id AND trophy_id = :trophy_id 
+                                     LIMIT :limit";
+                        $deleteStmt = $pdo->prepare($deleteSql);
+                        $deleteStmt->bindValue(':user_id', $user_id, PDO::PARAM_INT);
+                        $deleteStmt->bindValue(':trophy_id', $trophy_id, PDO::PARAM_INT);
+                        $deleteStmt->bindValue(':limit', $diff, PDO::PARAM_INT);
+                        $deleteStmt->execute();
+                    }
+                }
             }
 
             // トランザクションコミット
             $pdo->commit();
 
-            // 成功時のリダイレクト - user_idを含めて元の詳細ページに戻る
+            // 成功時のリダイレクト
             header("Location: ../K3-3/K3-3.php?user_id=" . urlencode($user_id));
             exit;
 

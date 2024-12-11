@@ -57,10 +57,12 @@
 <body class="bg-[#1a1a1a] text-white min-h-screen w-auto flex flex-col justify-start bg-[url('loginback1.jpeg')] bg-center bg-cover bg-no-repeat bg-fixed">
     <header class="flex justify-between items-start w-full px-20 py-10 box-border bg-transparent relative h-[300px]">
         <div class="flex flex-col gap-4 z-10">
-            <div class="inline-flex items-center justify-center border-2 border-[#ffd700] rounded-[15px] px-7 py-3.5 min-w-[200px] h-[80px] text-2xl bg-opacity-80 bg-[#2a2a2a] text-[#ffd700] cursor-pointer transition-all duration-300 shadow-[0_0_15px_rgba(255,215,0,0.2)] backdrop-blur-sm hover:translate-y-[-5px] hover:shadow-[0_0_25px_rgba(255,215,0,0.4)] hover:bg-opacity-90">
-                <span class="flex-shrink-0">🅿</span>
-                <span id="pointsDisplay" class="ml-2.5 text-shadow-[0_0_10px_rgba(255,215,0,0.5)] whitespace-nowrap">0000pt</span>
-            </div>
+            <a href="../MiniGame/index.php" class="no-underline">
+                <div class="inline-flex items-center justify-center border-2 border-[#ffd700] rounded-[15px] px-7 py-3.5 min-w-[200px] h-[80px] text-2xl bg-opacity-80 bg-[#2a2a2a] text-[#ffd700] cursor-pointer transition-all duration-300 shadow-[0_0_15px_rgba(255,215,0,0.2)] backdrop-blur-sm hover:translate-y-[-5px] hover:shadow-[0_0_25px_rgba(255,215,0,0.4)] hover:bg-opacity-90">
+                    <span class="flex-shrink-0">🅿</span>
+                    <span id="pointsDisplay" class="ml-2.5 text-shadow-[0_0_10px_rgba(255,215,0,0.5)] whitespace-nowrap">0000pt</span>
+                </div>
+            </a>
             <div class="flex items-center justify-center border-2 border-[#ffd700] rounded-[15px] px-7 py-3.5 min-w-[200px] h-[80px] text-2xl bg-opacity-80 bg-[#2a2a2a] text-[#ffd700] cursor-pointer transition-all duration-300 shadow-[0_0_15px_rgba(255,215,0,0.2)] backdrop-blur-sm hover:translate-y-[-5px] hover:shadow-[0_0_25px_rgba(255,215,0,0.4)] hover:bg-opacity-90" onclick="handleTrophyClick()">
                 <span>🏆</span>
                 <span id="trophyDisplay" class="ml-2.5 text-blue-500">00</span>

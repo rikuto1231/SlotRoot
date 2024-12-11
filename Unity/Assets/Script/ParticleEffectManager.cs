@@ -21,142 +21,7 @@ public class ParticleEffectManager : MonoBehaviour
 
     private void Start()
     {
-        SetupParticles();
         SetDefaultState();
-    }
-
-    private void SetupParticles()
-    {
-        if (lightEffects == null || lightEffects.Count == 0)
-        {
-            Debug.LogError("No light effects configured");
-            return;
-        }
-
-        foreach (var effect in lightEffects)
-        {
-            if (effect.particle != null)
-            {
-                ConfigureParticleSystem(effect.particle);
-            }
-        }
-    }
-
-    private void ConfigureParticleSystem(ParticleSystem particle)
-    {
-        particle.Stop();
-        particle.Clear();
-
-        var main = particle.main;
-        main.loop = true;
-        main.playOnAwake = false;
-        main.duration = 1.0f;
-        main.startLifetime = 0.8f;
-        main.startSpeed = 2f;
-        main.startSize = 0.05f;
-        main.maxParticles = 30;
-        main.simulationSpace = ParticleSystemSimulationSpace.World;
-        main.scalingMode = ParticleSystemScalingMode.Local;
-        main.gravityModifier = 0;
-
-        var emission = particle.emission;
-        emission.enabled = true;
-        emission.rateOverTime = 20;
-
-        var shape = particle.shape;
-        shape.enabled = true;
-        shape.shapeType = ParticleSystemShapeType.Circle;
-        shape.radius = 0.05f;
-        shape.radiusThickness = 0;
-        shape.arc = 360;
-        shape.randomDirectionAmount = 0.2f;
-
-        var colorOverLifetime = particle.colorOverLifetime;
-        colorOverLifetime.enabled = true;
-        var gradient = new Gradient();
-        gradient.SetKeys(
-            new GradientColorKey[] { 
-                new GradientColorKey(Color.white, 0.0f),
-                new GradientColorKey(Color.white, 1.0f) 
-            },
-            new GradientAlphaKey[] {
-                new GradientAlphaKey(1.0f, 0.0f),
-                new GradientAlphaKey(0.0f, 1.0f)
-            }
-        );
-        colorOverLifetime.color = gradient;
-
-        var sizeOverLifetime = particle.sizeOverLifetime;
-        sizeOverLifetime.enabled = true;
-        var curve = new AnimationCurve(
-            new Keyframe(0f, 0.5f),
-            new Keyframe(0.5f, 1f),
-            new Keyframe(1f, 0f)
-        );
-        sizeOverLifetime.size = new ParticleSystem.MinMaxCurve(1f, curve);
-
-        var velocityOverLifetime = particle.velocityOverLifetime;
-        velocityOverLifetime.enabled = true;
-        velocityOverLifetime.radial = 1.0f;
-
-        var renderer = particle.GetComponent<ParticleSystemRenderer>();
-        if (renderer != null)
-        {
-            renderer.renderMode = ParticleSystemRenderMode.Billboard;
-            renderer.sortingLayerID = SortingLayer.NameToID("UI");
-            renderer.sortingOrder = 5;
-            renderer.material = new Material(Shader.Find("Particles/Additive"));
-
-            // パーティクル描画位置を親のImageに合わせる
-            renderer.pivot = Vector3.zero;
-            renderer.alignment = ParticleSystemRenderSpace.View;
-        }
-
-        // パーティクルのTransformは親のImageに合わせる
-        particle.transform.localPosition = Vector3.zero;
-        particle.transform.localScale = Vector3.one;
-    }
-
-private void CreateBurstEffect(ParticleSystem particle, Color targetColor)
-{
-    var emission = particle.emission;
-    
-    // バーストの設定
-    var burst = new ParticleSystem.Burst(0.0f, 10, 1, 0.01f);
-    emission.SetBursts(new ParticleSystem.Burst[] { burst });
-
-    // 色の設定
-    var main = particle.main;
-    var startColor = main.startColor;
-    startColor.mode = ParticleSystemGradientMode.TwoColors;
-    startColor.colorMin = Color.white;
-    startColor.colorMax = targetColor;
-    main.startColor = startColor;
-}
-
-    private void SetLightsColor(Color color)
-    {
-        foreach (var effect in lightEffects)
-        {
-            if (effect.lightImage != null)
-            {
-                effect.lightImage.color = color;
-            }
-
-            if (effect.particle != null)
-            {
-                if (color == defaultColor)
-                {
-                    effect.particle.Stop();
-                    effect.particle.Clear();
-                }
-                else
-                {
-                    CreateBurstEffect(effect.particle, color);
-                    effect.particle.Play();
-                }
-            }
-        }
     }
 
     public void StartBlinking(int blinkType)
@@ -165,6 +30,7 @@ private void CreateBurstEffect(ParticleSystem particle, Color targetColor)
         {
             StopCoroutine(blinkCoroutine);
         }
+
         blinkCoroutine = StartCoroutine(BlinkEffect(blinkType));
     }
 
@@ -196,9 +62,43 @@ private void CreateBurstEffect(ParticleSystem particle, Color targetColor)
             yield return new WaitForSeconds(blinkDuration);
         }
 
+        // 点滅終了後は指定された色を維持
         SetLightsColor(blinkColor);
         blinkCoroutine = null;
     }
+
+private void SetLightsColor(Color color)
+{
+    foreach (var effect in lightEffects)
+    {
+        // Imageの色変更
+        if (effect.lightImage != null)
+        {
+            effect.lightImage.color = color;
+        }
+
+        // パーティクルの制御
+        if (effect.particle != null)
+        {
+            if (color == defaultColor)
+            {
+                effect.particle.Stop();
+                effect.particle.Clear();  // 既存のパーティクルをクリア
+            }
+            else
+            {
+                var main = effect.particle.main;
+                main.startColor = color;
+
+                effect.particle.Stop();
+                effect.particle.Clear();
+                effect.particle.Play();  // 確実に再生
+
+                Debug.Log($"Playing particle with color: {color}");  // デバッグログ
+            }
+        }
+    }
+}
 
     public void ChangeColor(int colorType)
     {
@@ -223,6 +123,17 @@ private void CreateBurstEffect(ParticleSystem particle, Color targetColor)
         SetLightsColor(newColor);
     }
 
+private void StopAllParticles()
+{
+    foreach (var effect in lightEffects)
+    {
+        if (effect.particle != null)
+        {
+            effect.particle.Stop();
+        }
+    }
+}
+
     public void SetDefaultState()
     {
         if (blinkCoroutine != null)
@@ -233,3 +144,4 @@ private void CreateBurstEffect(ParticleSystem particle, Color targetColor)
         SetLightsColor(defaultColor);
     }
 }
+

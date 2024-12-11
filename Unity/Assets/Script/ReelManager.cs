@@ -14,6 +14,8 @@ public class ReelManager : MonoBehaviour
     [SerializeField] private AudioClip spacePressSound;
     [SerializeField] private Image bonusImage;
     [SerializeField] private ParticleEffectManager effectManager;
+    [SerializeField] private StatsManager statsManager;  // 追加
+
     [SerializeField] private List<SpriteEffect> spriteEffects;
     
 
@@ -73,6 +75,7 @@ public class ReelManager : MonoBehaviour
         StartAllReels();
         rotationCount++;
         AddPoints(-100);
+        statsManager.IncrementSpins();  // 追加
         CheckForBonusDraw();
     }
 
@@ -82,7 +85,7 @@ public class ReelManager : MonoBehaviour
         StartAllReels();
         rotationCount++;
         bonusReelCount++;
-        AddPoints(150);
+        AddPoints(200);
 
         if (bonusReelCount >= 10 && !isBattleResultChecked)
         {
@@ -130,6 +133,8 @@ public class ReelManager : MonoBehaviour
 
         if (isWinningCombination && currentEffect != null)
         {
+            statsManager.IncrementWins();  // 追加
+
             if (isInBonusState && reels[0].GetCurrentSprite() == currentEffect.sprite)
             {
                 PlayVictoryVideo();
@@ -174,6 +179,7 @@ public class ReelManager : MonoBehaviour
         {
             isInBonusState = true;
             bonusReelCount = 0;
+
             
             outerFrameEffect.StartBlinking(2);
             if (effectManager != null)

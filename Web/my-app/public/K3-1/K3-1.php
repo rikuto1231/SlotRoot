@@ -8,6 +8,18 @@ require '../../src/common/Db_connect.php';
 try {
     $pdo = getDatabaseConnection();
     
+    // ページネーションの設定
+    $itemsPerPage = 100; // 1ページあたりの表示件数
+    $currentPage = isset($_GET['page']) ? max(1, intval($_GET['page'])) : 1;
+    $offset = ($currentPage - 1) * $itemsPerPage;
+
+    // 総件数を取得
+    $countSql = "SELECT COUNT(*) as total FROM user";
+    $countStmt = $pdo->prepare($countSql);
+    $countStmt->execute();
+    $totalItems = $countStmt->fetch(PDO::FETCH_ASSOC)['total'];
+    $totalPages = ceil($totalItems / $itemsPerPage);
+    
     // デフォルトのソート設定
     $allowedColumns = ['point', 'name', 'create_at', 'update_at']; // 許可されたカラム
     $sortColumn = in_array($_GET['sort'] ?? '', $allowedColumns) ? $_GET['sort'] : 'point';
@@ -18,19 +30,22 @@ try {
         $sortColumn = 'point';
     }
     
-    // SQLクエリ
+    // SQLクエリ with pagination
     $sql = "SELECT user_id, name, point, create_at, update_at 
             FROM user 
-            ORDER BY {$sortColumn} {$sortOrder}";
+            ORDER BY {$sortColumn} {$sortOrder}
+            LIMIT :limit OFFSET :offset";
             
     $stmt = $pdo->prepare($sql);
+    $stmt->bindValue(':limit', $itemsPerPage, PDO::PARAM_INT);
+    $stmt->bindValue(':offset', $offset, PDO::PARAM_INT);
     $stmt->execute();
     $rankings = $stmt->fetchAll(PDO::FETCH_ASSOC);
 } catch (PDOException $e) {
     echo "データベースエラー: " . $e->getMessage();
 }
 
-// 現在のソート状態を取得（セレクトボックスの選択状態用）
+// 現在のソート状態を取得
 $currentSort = $sortColumn . '_' . strtolower($sortOrder);
 ?>
 
@@ -38,14 +53,14 @@ $currentSort = $sortColumn . '_' . strtolower($sortOrder);
 <html lang="ja">
 <head>
     <?php require_once '../../src/common/common_head.php'; ?>
-    <title>ランキングテーブル</title>
+    <title>ランキング情報</title>
 </head>
 <body class="bg-gray-50">
     <!-- ヘッダー -->
     <header class="fixed top-0 left-0 w-full bg-blue-800 text-white p-4 shadow-lg z-50">
         <div class="max-w-7xl mx-auto flex items-center justify-between gap-4">
             <div class="flex-none">
-                <h1 class="text-2xl font-bold">ランキング</h1>
+                <h1 class="text-2xl font-bold">ランキング情報</h1>
             </div>
 
             <!-- 検索とソート -->
@@ -111,7 +126,7 @@ $currentSort = $sortColumn . '_' . strtolower($sortOrder);
                 <tbody class="divide-y divide-gray-200">
                     <?php foreach ($rankings as $index => $ranking): ?>
                         <tr class="hover:bg-gray-50">
-                            <td class="px-6 py-4 text-center"><?php echo ($index + 1); ?></td>
+                            <td class="px-6 py-4 text-center"><?php echo $offset + $index + 1; ?></td>
                             <td class="px-6 py-4">
                                 <form method="POST" action="../K3-3/K3-3.php" class="inline">
                                     <input type="hidden" name="user_id" value="<?php echo htmlspecialchars($ranking['user_id']); ?>">
@@ -127,6 +142,42 @@ $currentSort = $sortColumn . '_' . strtolower($sortOrder);
                     <?php endforeach; ?>
                 </tbody>
             </table>
+        </div>
+
+        <!-- ページネーション -->
+        <div class="mt-6 flex justify-center items-center space-x-2 pb-8">
+            <?php
+            // 表示するページ番号の範囲を計算
+            $range = 2; // 現在のページの前後に表示するページ数
+            $startPage = max(1, $currentPage - $range);
+            $endPage = min($totalPages, $currentPage + $range);
+
+            // 最初のページへのリンク
+            if ($currentPage > 1): ?>
+                <a href="?page=1&sort=<?php echo $sortColumn; ?>&order=<?php echo $sortOrder; ?>" 
+                   class="px-4 py-2 bg-white border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-100">
+                    &lt;&lt;
+                </a>
+            <?php endif; ?>
+
+            <!-- ページ番号のリンク -->
+            <?php for ($i = $startPage; $i <= $endPage; $i++): ?>
+                <a href="?page=<?php echo $i; ?>&sort=<?php echo $sortColumn; ?>&order=<?php echo $sortOrder; ?>" 
+                   class="px-4 py-2 <?php echo $i === $currentPage 
+                        ? 'bg-blue-600 text-white' 
+                        : 'bg-white text-gray-700 hover:bg-gray-100'; ?> 
+                          border border-gray-300 rounded-lg">
+                    <?php echo $i; ?>
+                </a>
+            <?php endfor; ?>
+
+            <!-- 最後のページへのリンク -->
+            <?php if ($currentPage < $totalPages): ?>
+                <a href="?page=<?php echo $totalPages; ?>&sort=<?php echo $sortColumn; ?>&order=<?php echo $sortOrder; ?>" 
+                   class="px-4 py-2 bg-white border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-100">
+                    &gt;&gt;
+                </a>
+            <?php endif; ?>
         </div>
     </div>
 
@@ -162,19 +213,13 @@ $currentSort = $sortColumn . '_' . strtolower($sortOrder);
 
         // ソート処理
         function sortTable(value) {
-            // 現在の検索クエリをURLパラメータとして保持
-            const searchInput = document.getElementById('searchInput');
             const params = new URLSearchParams(window.location.search);
-            
-            // ソートパラメータを設定
             const [column, order] = value.split('_');
             params.set('sort', column);
             params.set('order', order.toUpperCase());
+            params.set('page', '1'); // ソート時は1ページ目に戻る
             
-            // 検索クエリをローカルストレージに保存
             localStorage.setItem('searchQuery', searchInput.value);
-            
-            // ページを更新
             window.location.href = `?${params.toString()}`;
         }
 
@@ -188,13 +233,11 @@ $currentSort = $sortColumn . '_' . strtolower($sortOrder);
                 newOrder = 'ASC';
             }
             
-            // 検索クエリをローカルストレージに保存
-            const searchInput = document.getElementById('searchInput');
-            localStorage.setItem('searchQuery', searchInput.value);
-
-            // ソートパラメータを設定して更新
             params.set('sort', column);
             params.set('order', newOrder);
+            params.set('page', '1'); // ソート時は1ページ目に戻る
+            
+            localStorage.setItem('searchQuery', searchInput.value);
             window.location.href = `?${params.toString()}`;
         }
 
