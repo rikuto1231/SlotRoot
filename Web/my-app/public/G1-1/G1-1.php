@@ -80,7 +80,7 @@
     </header>
 
     <section class="flex flex-col items-center gap-10 mt-40 mb-20 px-5 max-w-[1200px] mx-auto">
-        <a href="../Game/index.php">
+        <a href="../G7-1/G7-1.php">
             <button class="font-shodou w-[600px] p-8 rounded-[20px] text-5xl bg-black bg-opacity-70 cursor-pointer transition-all duration-300 relative overflow-hidden backdrop-blur-sm text-red-500 border-3 border-red-500 shadow-[0_0_20px_rgba(255,0,0,0.3)] hover:scale-105 hover:bg-opacity-80 hover:shadow-[0_0_30px_rgba(255,0,0,0.5)] slot-machine-border">プレイ</button>
         </a>
         <a href="../G4-1/G4-1.php">

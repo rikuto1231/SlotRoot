@@ -34,13 +34,14 @@ let unGiftSpawnRate = 3000; // un_gift生成間隔（ms）
 let gifts;
 let unGifts;
 
+
+
 function preload() {
         this.load.image('background', 'assets/images/background.png');
         this.load.image('player', 'assets/images/player.png');
         this.load.image('enemy', 'assets/images/obstacle.png');
         this.load.image('gift', 'assets/images/gift.png');
         this.load.image('un_gift', 'assets/images/un_gift.png');
-
 }
 
 function create() {

@@ -8,9 +8,8 @@ public class SaveButton : MonoBehaviour
     [SerializeField] private ReelManager reelManager;
     [SerializeField] private Image saveNotification;  // 追加: 通知用画像
     [SerializeField] private float notificationDuration = 3f;  // 追加: 表示時間
-
     private Coroutine showNotificationCoroutine;  // 追加: コルーチン管理用
-
+    
     private void Start()
     {
         if (saveButton != null)

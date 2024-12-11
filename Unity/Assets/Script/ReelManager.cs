@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine.UI;
 
-// 追加要件：フレームとライトの点滅処理を同期するために共通管理クラス方式に移行。
 public class ReelManager : MonoBehaviour
 {
     [SerializeField] private List<Reel> reels;
@@ -14,14 +13,14 @@ public class ReelManager : MonoBehaviour
     [SerializeField] private AudioClip spacePressSound;
     [SerializeField] private Image bonusImage;
     [SerializeField] private ParticleEffectManager effectManager;
-    [SerializeField] private StatsManager statsManager;  // 追加
+    [SerializeField] private StatsManager statsManager;
+    [SerializeField] private SharedPlayManager sharedPlayManager;
 
     [SerializeField] private List<SpriteEffect> spriteEffects;
-    
 
     private int currentReelIndex = 0;
     private bool isReelActive = false;
-    private int point = 0; 
+    private int point = 0;
     private int rotationCount = 0;
     private int bonusReelCount = 0;
     private bool canRotate = true;
@@ -32,6 +31,7 @@ public class ReelManager : MonoBehaviour
     private bool isPointDirty = false;
     private const int SAVE_THRESHOLD = 10;
     private int changeCount = 0;
+    private bool isSharedMode = false;
 
     private void Start()
     {
@@ -40,10 +40,36 @@ public class ReelManager : MonoBehaviour
 
     private void InitializeGame()
     {
-        ApiManager.GetUserPoint(this, UserSession.UserId, point => {
-            this.point = point;
-            UpdatePointDisplay();
-        });
+        // 通常モードの場合のみAPIからポイントを取得
+        if (!isSharedMode)
+        {
+            ApiManager.GetUserPoint(this, UserSession.UserId, point => {
+                this.point = point;
+                UpdatePointDisplay();
+            });
+        }
+    }
+
+    // ノリ打ちモード用の初期化メソッド
+    public void InitializeSharedPlay(int initialPoints)
+    {
+        isSharedMode = true;
+        point = initialPoints;
+        UpdatePointDisplay();
+    }
+
+    // 現在のポイントを取得
+    public int GetCurrentPoints()
+    {
+        return point;
+    }
+
+    // ノリ打ちモード時のポイント更新
+    public void UpdateSharedPoints(int newPoints)
+    {
+        if (!isSharedMode) return;
+        point = newPoints;
+        UpdatePointDisplay();
     }
 
     private void Update()
@@ -75,7 +101,7 @@ public class ReelManager : MonoBehaviour
         StartAllReels();
         rotationCount++;
         AddPoints(-100);
-        statsManager.IncrementSpins();  // 追加
+        statsManager.IncrementSpins();
         CheckForBonusDraw();
     }
 
@@ -133,7 +159,7 @@ public class ReelManager : MonoBehaviour
 
         if (isWinningCombination && currentEffect != null)
         {
-            statsManager.IncrementWins();  // 追加
+            statsManager.IncrementWins();
 
             if (isInBonusState && reels[0].GetCurrentSprite() == currentEffect.sprite)
             {
@@ -179,7 +205,6 @@ public class ReelManager : MonoBehaviour
         {
             isInBonusState = true;
             bonusReelCount = 0;
-
             
             outerFrameEffect.StartBlinking(2);
             if (effectManager != null)
@@ -224,7 +249,7 @@ public class ReelManager : MonoBehaviour
         outerFrameEffect.StartBlinking(1);
         if (effectManager != null)
         {
-            effectManager.StartBlinking(1); 
+            effectManager.StartBlinking(1);
         }
         
         videoPlayManager.StopBattleVideo();
@@ -312,7 +337,13 @@ public class ReelManager : MonoBehaviour
         isPointDirty = true;
         changeCount++;
 
-        if (changeCount >= SAVE_THRESHOLD)
+        // ノリ打ちモード時はSharedPlayManagerに通知
+        if (isSharedMode && sharedPlayManager != null)
+        {
+            sharedPlayManager.UpdatePoints(point);
+        }
+        // 通常モード時は一定回数ごとに保存
+        else if (changeCount >= SAVE_THRESHOLD)
         {
             SaveCurrentPoints();
             changeCount = 0;
@@ -323,8 +354,21 @@ public class ReelManager : MonoBehaviour
     {
         if (isPointDirty)
         {
-            Debug.Log($"ポイントを保存します: {point}");
-            ApiManager.SaveUserPoint(this, UserSession.UserId, point);
+            int pointsToSave = isSharedMode ? point / 2 : point;  // ノリ打ちモードの場合は半分のポイントを保存
+            Debug.Log($"ポイントを保存します: {pointsToSave}");
+            ApiManager.SaveUserPoint(this, UserSession.UserId, pointsToSave);
+            isPointDirty = false;
+        }
+    }
+
+    // ノリ打ちモード終了時の専用メソッド
+    public void SaveSharedPlayPoints()
+    {
+        if (isSharedMode)
+        {
+            int finalPoints = point / 2;  // 合計ポイントの半分を保存
+            Debug.Log($"ノリ打ち終了時のポイント保存: {finalPoints}");
+            ApiManager.SaveUserPoint(this, UserSession.UserId, finalPoints);
             isPointDirty = false;
         }
     }
@@ -334,6 +378,15 @@ public class ReelManager : MonoBehaviour
         if (pointText != null)
         {
             pointText.text = $"{point}P";
+        }
+    }
+
+    private void OnDestroy()
+    {
+        // ゲーム終了時にポイントを保存
+        if (isPointDirty)
+        {
+            SaveCurrentPoints();
         }
     }
 }

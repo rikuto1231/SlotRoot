@@ -31,12 +31,30 @@ try {
     // POSTリクエスト（ポイント更新）を追加
     else if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['user_id']) && isset($_POST['point'])) {
         error_log("POST request received - user_id: " . $_POST['user_id'] . ", point: " . $_POST['point']);
-        
-        $stmt = $pdo->prepare("UPDATE user SET point = ? WHERE user_id = ?");
-        $stmt->execute([$_POST['point'], $_POST['user_id']]);
-        
+
+        if ($_SESSION['is_shared_mode']) {
+            // ノリ打ちモードの場合
+
+            // セッションから元のポイントを取得
+            $originalPoints = isset($_SESSION['user_point']) ? $_SESSION['user_point'] : 0;
+
+            // 正しい計算式: (元のポイント - 出資したポイント)の変数 + 半分の戻りポイント
+            $updatedPoints = $originalPoints + $_POST['point'];
+
+            // データベースを更新
+            $stmt = $pdo->prepare("UPDATE user SET point = ? WHERE user_id = ?");
+            $stmt->execute([$updatedPoints, $_POST['user_id']]);
+                    
+            // セッションを更新
+            $_SESSION['user_point'] = $updatedPoints;
+        } else {
+            $stmt = $pdo->prepare("UPDATE user SET point = ? WHERE user_id = ?");
+            $stmt->execute([$_POST['point'], $_POST['user_id']]);
+        }
+    
         error_log("Points updated successfully");
         echo json_encode(['success' => true]);
+
     }
 } catch (PDOException $e) {
     error_log("Database Error: " . $e->getMessage());
