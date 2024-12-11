@@ -27,27 +27,33 @@ let gameOver = false;
 let gameSpeed = 1;
 let background;
 let cursors;
+let enemySpawnRate = 1000; // 初期敵生成間隔（ms）
+let isSpawnRateIncreased = false; // 敵生成間隔が変更されたかを監視
+let giftSpawnRate = 2000; // gift生成間隔（ms）
+let unGiftSpawnRate = 3000; // un_gift生成間隔（ms）
+let gifts;
+let unGifts;
 
 function preload() {
-    // 画像のロード
-    this.load.image('background', 'assets/images/background.png');
-    this.load.image('player', 'assets/images/player.png');
-    this.load.image('enemy', 'assets/images/obstacle.png');
+        this.load.image('background', 'assets/images/background.png');
+        this.load.image('player', 'assets/images/player.png');
+        this.load.image('enemy', 'assets/images/obstacle.png');
+        this.load.image('gift', 'assets/images/gift.png');
+        this.load.image('un_gift', 'assets/images/un_gift.png');
+
 }
 
 function create() {
-    // 背景の設定
     background = this.add.tileSprite(520, 260, 1040, 520, 'background');
 
-    // プレイヤーの設定
     player = this.physics.add.sprite(520, 260, 'player');
     player.setScale(0.8);
     player.setCollideWorldBounds(true);
 
-    // 敵グループの設定
     enemies = this.physics.add.group();
+    gifts = this.physics.add.group();
+    unGifts = this.physics.add.group();
 
-    // WASDキーの設定
     cursors = this.input.keyboard.addKeys({
         up: Phaser.Input.Keyboard.KeyCodes.W,
         down: Phaser.Input.Keyboard.KeyCodes.S,
@@ -55,26 +61,38 @@ function create() {
         right: Phaser.Input.Keyboard.KeyCodes.D
     });
 
-    // スコアテキストの設定
-    scoreText = this.add.text(16, 16, 'Score: 0', { 
-        fontSize: '32px', 
+    scoreText = this.add.text(16, 16, 'Score: 0', {
+        fontSize: '32px',
         fill: '#fff',
         stroke: '#000',
         strokeThickness: 4
     });
 
-    // 敵との衝突判定
     this.physics.add.collider(player, enemies, gameOverHandler, null, this);
+    this.physics.add.overlap(player, gifts, collectGift, null, this);
+    this.physics.add.overlap(player, unGifts, hitUnGift, null, this);
 
-    // 定期的に敵を生成
-    this.time.addEvent({
-        delay: 1000,
+    this.enemySpawnTimer = this.time.addEvent({
+        delay: enemySpawnRate,
         callback: spawnEnemy,
         callbackScope: this,
         loop: true
     });
 
-    // スコア更新
+    this.giftSpawnTimer = this.time.addEvent({
+        delay: giftSpawnRate,
+        callback: spawnGift,
+        callbackScope: this,
+        loop: true
+    });
+
+    this.unGiftSpawnTimer = this.time.addEvent({
+        delay: unGiftSpawnRate,
+        callback: spawnUnGift,
+        callbackScope: this,
+        loop: true
+    });
+
     this.time.addEvent({
         delay: 100,
         callback: updateScore,
@@ -85,10 +103,8 @@ function create() {
 
 function update() {
     if (!gameOver) {
-        // プレイヤーの移動
         const moveSpeed = 200;
-        
-        // 水平方向の移動
+
         if (cursors.left.isDown) {
             player.setVelocityX(-moveSpeed);
         } else if (cursors.right.isDown) {
@@ -97,7 +113,6 @@ function update() {
             player.setVelocityX(0);
         }
 
-        // 垂直方向の移動
         if (cursors.up.isDown) {
             player.setVelocityY(-moveSpeed);
         } else if (cursors.down.isDown) {
@@ -106,22 +121,55 @@ function update() {
             player.setVelocityY(0);
         }
 
-        // 背景のスクロール
         background.tilePositionX += 1 * gameSpeed;
 
-        // 敵の移動と削除
-        enemies.children.iterate(function(enemy) {
-            if (enemy) {
-                if (enemy.x < -enemy.width || enemy.x > config.width + enemy.width ||
-                    enemy.y < -enemy.height || enemy.y > config.height + enemy.height) {
-                    enemy.destroy();
-                }
+        enemies.children.iterate(function (enemy) {
+            if (enemy && (enemy.x < -enemy.width || enemy.x > config.width + enemy.width ||
+                enemy.y < -enemy.height || enemy.y > config.height + enemy.height)) {
+                enemy.destroy();
             }
         });
 
-        // ゲームスピードの増加
+        gifts.children.iterate(function (gift) {
+            if (gift && gift.y > config.height) {
+                gift.destroy();
+            }
+        });
+
+        unGifts.children.iterate(function (unGift) {
+            if (unGift && unGift.y > config.height) {
+                unGift.destroy();
+            }
+        });
+
         gameSpeed += 0.0001;
     }
+}
+
+function spawnGift() {
+    const gift = gifts.create(Phaser.Math.Between(50, 990), 0, 'gift');
+    gift.setVelocity(0, 200 * gameSpeed);
+    gift.setCollideWorldBounds(true);
+    gift.setBounce(1);
+}
+
+function spawnUnGift() {
+    const unGift = unGifts.create(Phaser.Math.Between(50, 990), 0, 'un_gift');
+    unGift.setVelocity(0, 200 * gameSpeed);
+    unGift.setCollideWorldBounds(true);
+    unGift.setBounce(1);
+}
+
+function collectGift(player, gift) {
+    score += 20;
+    scoreText.setText('Score: ' + score);
+    gift.destroy();
+}
+
+function hitUnGift(player, unGift) {
+    score -= 50;
+    scoreText.setText('Score: ' + score);
+    unGift.destroy();
 }
 
 function spawnEnemy() {
@@ -155,7 +203,27 @@ function updateScore() {
     if (!gameOver) {
         score += 2;
         scoreText.setText('Score: ' + score);
+
+        // スコアが500を超えたら敵生成間隔を調整
+        if (score >= 500 && !isSpawnRateIncreased) {
+            isSpawnRateIncreased = true;
+            increaseEnemySpawnRate(this);
+        }
     }
+}
+
+function increaseEnemySpawnRate(scene) {
+    // 生成間隔を1.6倍短くする
+    enemySpawnRate /= 1.6;
+
+    // タイマーを再作成
+    scene.enemySpawnTimer.remove();
+    scene.enemySpawnTimer = scene.time.addEvent({
+        delay: enemySpawnRate,
+        callback: spawnEnemy,
+        callbackScope: scene,
+        loop: true
+    });
 }
 
 function gameOverHandler() {
